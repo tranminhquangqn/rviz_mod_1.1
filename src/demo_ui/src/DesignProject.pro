@@ -7,7 +7,7 @@ QT += \
     widgets \
     qml \
     quickcontrols
-
+    
 static {
     QT += svg
     QTPLUGIN += qtvirtualkeyboardplugin
@@ -63,6 +63,7 @@ SOURCES += main.cpp \
     Model/notify_model.cpp \
     ViewModel/NotifyVM/notify_vm.cpp \
     ViewModel/RvizVM/displayconfig.cpp \
+    ViewModel/RvizVM/widgetitem.cpp \
     ViewModel/RvizVM/simplegrid.cpp
 
 RESOURCES += qml.qrc
@@ -120,6 +121,7 @@ HEADERS += \
     Model/notify_model.h \
     ViewModel/NotifyVM/notify_vm.h \
     ViewModel/RvizVM/displayconfig.h \
+    ViewModel/RvizVM/widgetitem.h \
     ViewModel/RvizVM/simplegrid.h
 
 #---------------------------------------------------------------- My Libary ---------------------------------------------------------#

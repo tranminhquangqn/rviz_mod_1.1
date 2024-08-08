@@ -33,7 +33,6 @@
 
 #include <tinyxml2.h>
 
-#include <QDebug>
 
 namespace rviz
 {
@@ -49,7 +48,6 @@ DisplayFactory::DisplayFactory() : PluginlibFactory<Display>("rviz", "rviz::Disp
 
 Display* DisplayFactory::makeRaw(const QString& class_id, QString* error_return)
 {
-  qDebug()<<"makeRaw class id: "<<class_id;
   Display* display = PluginlibFactory<Display>::makeRaw(class_id, error_return);
   if (display)
   {
@@ -60,7 +58,6 @@ Display* DisplayFactory::makeRaw(const QString& class_id, QString* error_return)
 
 QSet<QString> DisplayFactory::getMessageTypes(const QString& class_id)
 {
-  qDebug()<<"getMessageTypes class id: "<<class_id;
   // lookup in cache
   if (message_type_cache_.find(class_id) != message_type_cache_.end())
   {

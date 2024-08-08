@@ -10,7 +10,7 @@
 #include <ros/time.h>
 
 #include "rviz/widgetitem.h"
-#include "rviz/visualizer_app_mod.h"
+// #include "rviz/visualizer_app_mod.h"
 
 namespace rviz {
 
@@ -23,7 +23,7 @@ class QuickVisualizationFrame : public QQuickItem
   Q_INTERFACES(QQmlParserStatus)
   Q_PROPERTY(QString statusText READ getStatusText NOTIFY statusTextChanged)
   Q_PROPERTY(QtQuickOgreRenderWindow* renderWindow READ getRenderWindow WRITE setRenderWindow NOTIFY renderWindowChanged)
-  Q_PROPERTY(VisualizationManager* manager READ getManager NOTIFY managerChanged)
+  Q_PROPERTY(VisualizationManager* manager READ getManager WRITE setManager NOTIFY managerChanged)
   Q_PROPERTY(bool initialized READ isInitialized NOTIFY initializedChanged)
   Q_PROPERTY(double fps READ fps NOTIFY fpsChanged)
 
@@ -31,8 +31,6 @@ public:
   explicit QuickVisualizationFrame(QQuickItem* parent = Q_NULLPTR);
   virtual ~QuickVisualizationFrame();
 
-  rviz::VisualizerAppMod* widgetRviz;
-  void setInitApp(QApplication* mainApp,int argc,char** argv);
 
   virtual void componentComplete();
 
@@ -66,6 +64,7 @@ public Q_SLOTS:
   virtual void setStatus(const QString &message);
 
   void setRenderWindow(QtQuickOgreRenderWindow* renderWindow);
+  void setManager(VisualizationManager* manager);
 
 Q_SIGNALS:
   void statusTextChanged(const QString &status_text);
@@ -105,12 +104,6 @@ private:
    * things rolling. */
   void initialize(QtQuickOgreRenderWindow *render_window);
 
-  WidgetItem widgetWindow;
-
-  // VisualizationFrameMod frame_mod;
-  QApplication* m_app;
-  int m_argc;
-  char **m_argv;
 };
 
 } // namespace rviz

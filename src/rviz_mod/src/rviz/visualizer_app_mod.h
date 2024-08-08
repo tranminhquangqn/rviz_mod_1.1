@@ -37,7 +37,7 @@
 #include <rviz/rviz_export.h>
 #include <rviz/SendFilePath.h>
 #endif
-#include "rviz/render_panel.h"
+#include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
 class QTimer;
 
@@ -56,7 +56,7 @@ public:
 
   /** Start everything.  Pass in command line arguments.
    * @return false on failure, true on success. */
-  virtual bool init(int argc, char** argv,RenderPanel* my_render_panel=nullptr);
+  bool init(int argc, char** argv,QtQuickOgreRenderWindow* renderWindow,QString configPath);
 
 // private Q_SLOTS:
 public Q_SLOTS:

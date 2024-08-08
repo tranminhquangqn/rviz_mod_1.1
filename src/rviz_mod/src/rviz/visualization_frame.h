@@ -283,17 +283,17 @@ protected:
    * variables. */
   void initConfigs();
 
-  void initMenus();
+  virtual void initMenus();
 
   /** @brief Sets up the top toolbar with QToolbuttions for adding/deleting tools and modifiying the tool
    * view **/
-  void initToolbars();
+  virtual void initToolbars();
 
   /** @brief Check for unsaved changes, prompt to save config, etc.
    * @return true if it is OK to exit, false if not. */
   bool prepareToExit();
 
-  void closeEvent(QCloseEvent* event) override;
+  virtual void closeEvent(QCloseEvent* event) override;
 
   void leaveEvent(QEvent* event) override;
 
@@ -394,7 +394,7 @@ protected:
 
   QLabel* status_label_;
   QLabel* fps_label_;
-  QStatusBar* original_status_bar_;
+  // QStatusBar* original_status_bar_;
 
   int frame_count_;
   ros::WallTime last_fps_calc_time_;

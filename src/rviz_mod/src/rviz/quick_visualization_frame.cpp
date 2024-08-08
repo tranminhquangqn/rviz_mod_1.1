@@ -24,9 +24,6 @@ QuickVisualizationFrame::QuickVisualizationFrame(QQuickItem *parent)
   , initializing_( false )
   , initialized_( false )
   , status_text_("")
-  , m_argc(0)
-  , m_argv(nullptr)
-  , widgetRviz(nullptr)
 {
   const auto loop = QProcessEnvironment::systemEnvironment();
   if (loop.value("QSG_RENDER_LOOP", "") != "basic") {
@@ -42,10 +39,10 @@ QuickVisualizationFrame::~QuickVisualizationFrame()
     render_panel_ = nullptr;
   }
 
-  // if (manager_ != nullptr) {
-  //   delete manager_;
-  //   manager_ = nullptr;
-  // }
+  if (manager_ != nullptr) {
+    delete manager_;
+    manager_ = nullptr;
+  }
 
   if (render_window_ != nullptr) {
     render_window_ = nullptr;
@@ -76,21 +73,10 @@ void QuickVisualizationFrame::initialize(QtQuickOgreRenderWindow *render_window)
 }
 
 void QuickVisualizationFrame::onOgreInitializing()
-{
-      // //QWidget ******************************
-
-  // widgetWindow.setWindowTitle("Moveit");
-  // widgetWindow.setFixedSize(700, 500);
-  // widgetWindow.setWindowFlags(Qt::WindowStaysOnTopHint);//Popup
-  // widgetWindow.show();
-
-  rviz::VisualizerAppMod* widgetRviz = new rviz::VisualizerAppMod();
-  widgetRviz->setApp(m_app);
-  widgetRviz->init(m_argc, m_argv,render_panel_);
-  
-  //manager_ = new VisualizationManager( render_panel_, nullptr );
-  //manager_->setRenderFromRenderPanel( true );
-  //render_panel_->initialize( manager_->getSceneManager(), manager_ );
+{  
+  manager_ = new VisualizationManager( render_panel_, nullptr );
+  manager_->setRenderFromRenderPanel( true );
+  render_panel_->initialize( manager_->getSceneManager(), manager_ );
 
   // would connect tool manager signals here
   //ToolManager* tool_man = manager_->getToolManager();
@@ -166,6 +152,14 @@ void rviz::QuickVisualizationFrame::setRenderWindow(QtQuickOgreRenderWindow *ren
     initialize(render_window);
   }
 }
+void rviz::QuickVisualizationFrame::setManager(VisualizationManager* manager)
+{
+  if (manager_ == manager) {
+    return;
+  }
+  manager_ = manager;
+  Q_EMIT managerChanged(manager_);
+}
 
 void QuickVisualizationFrame::load(const Config &config)
 {
@@ -214,12 +208,6 @@ void QuickVisualizationFrame::setStatus(const QString &message)
 {
   status_text_ = message;
   Q_EMIT statusTextChanged(status_text_);
-}
-void QuickVisualizationFrame::setInitApp(QApplication* mainApp,int argc,char** argv)
-{
-  m_app = mainApp;
-  m_argc = argc;
-  m_argv = argv;
 }
 
 } // namespace rviz

@@ -114,12 +114,15 @@ namespace rviz
 {
 VisualizationFrameMod::VisualizationFrameMod()
 {
+  setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);//Popup WindowStaysOnTopHint WindowCloseButtonHint FramelessWindowHint
+  //setWindowFlags(Qt::Dialog);//Popup
+  //setFocusPolicy(Qt::StrongFocus);
 }
 
 VisualizationFrameMod::~VisualizationFrameMod()
 {
 }
-void VisualizationFrameMod::initialize(const QString& display_config_file,RenderPanel* my_render_panel)
+void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuickOgreRenderWindow* renderWindow)
 {
   initConfigs();
   
@@ -129,13 +132,13 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
       QString::fromStdString((fs::path(package_path_) / "icons/package.png").BOOST_FILE_STRING()));
   setWindowIcon(app_icon);
 
-  if (splash_path_ != "")
-  {
-    QPixmap splash_image(splash_path_);
-    splash_ = new SplashScreen(splash_image);
-    splash_->show();
-    connect(this, SIGNAL(statusUpdate(const QString&)), splash_, SLOT(showMessage(const QString&)));
-  }
+  // if (splash_path_ != "")
+  // {
+  //   QPixmap splash_image(splash_path_);
+  //   splash_ = new SplashScreen(splash_image);
+  //   splash_->show();
+  //   connect(this, SIGNAL(statusUpdate(const QString&)), splash_, SLOT(showMessage(const QString&)));
+  // }
   Q_EMIT statusUpdate("Initializing");
 
   // Periodically process events for the splash screen.
@@ -153,16 +156,17 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
   if (app_)
     app_->processEvents();
 
-  QWidget* central_widget = new QWidget(this);
-  QHBoxLayout* central_layout = new QHBoxLayout;
-  central_layout->setSpacing(0);
-  central_layout->setMargin(0);
+  // QWidget* central_widget = new QWidget(this);
+  // QHBoxLayout* central_layout = new QHBoxLayout;
+  // central_layout->setSpacing(0);
+  // central_layout->setMargin(0);
 
-  auto render_window = new QtWidgetOgreRenderWindow( central_widget );
+
+  auto render_window = renderWindow;
+
   //auto render_window = new QtQuickOgreRenderWindowWidget( central_widget );
-  render_window_ = render_window;
-  render_panel_ = new RenderPanel( render_window, central_widget );
-  // render_panel_ = my_render_panel;
+//auto render_window = new QtWidgetOgreRenderWindow( central_widget );
+  render_panel_ = new RenderPanel( render_window, 0 );
 
   hide_left_dock_button_ = new QToolButton();
   hide_left_dock_button_->setContentsMargins(0, 0, 0, 0);
@@ -184,11 +188,11 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
 
   connect(hide_right_dock_button_, SIGNAL(toggled(bool)), this, SLOT(hideRightDock(bool)));
 
-  central_layout->addWidget(hide_left_dock_button_, 0);
-  central_layout->addWidget(render_window_, 1 );
-  central_layout->addWidget(hide_right_dock_button_, 0);
+  // central_layout->addWidget(hide_left_dock_button_, 0);
+  // central_layout->addWidget(render_window_, 1 );
+  // central_layout->addWidget(hide_right_dock_button_, 0);
 
-  central_widget->setLayout(central_layout);
+  // central_widget->setLayout(central_layout);
 
   // Periodically process events for the splash screen.
   if (app_)
@@ -206,15 +210,14 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
   if (app_)
     app_->processEvents();
 
-  setCentralWidget(central_widget);
+  // setCentralWidget(central_widget);
 
   // Periodically process events for the splash screen.
   if (app_)
     app_->processEvents();
-  this->show();
+  // this->show();
 
-//   manager_ = new VisualizationManager(render_panel_, this);
-  manager_ = new VisualizationManager(my_render_panel, this);
+  manager_ = new VisualizationManager(render_panel_, this);
   manager_->setHelpPath(help_path_);
   connect(manager_, SIGNAL(escapePressed()), this, SLOT(exitFullScreen()));
 
@@ -256,8 +259,8 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
   if (app_)
     app_->processEvents();
 
-  delete splash_;
-  splash_ = nullptr;
+  // delete splash_;
+  // splash_ = nullptr;
 
   manager_->startUpdate();
   initialized_ = true;
@@ -266,4 +269,60 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,Render
   connect(manager_, SIGNAL(preUpdate()), this, SLOT(updateFps()));
   connect(manager_, SIGNAL(statusUpdate(const QString&)), this, SIGNAL(statusUpdate(const QString&)));
 }
+
+void VisualizationFrameMod::initMenus()
+{
+  file_menu_ = menuBar()->addMenu("&File");
+
+  QAction* file_menu_open_action =
+      file_menu_->addAction("&Open Config", this, SLOT(onOpen()), QKeySequence("Ctrl+O"));
+  this->addAction(file_menu_open_action);
+  QAction* file_menu_save_action =
+      file_menu_->addAction("&Save Config", this, SLOT(onSave()), QKeySequence("Ctrl+S"));
+  this->addAction(file_menu_save_action);
+  QAction* file_menu_save_as_action =
+      file_menu_->addAction("Save Config &As", this, SLOT(onSaveAs()), QKeySequence("Ctrl+Shift+S"));
+  this->addAction(file_menu_save_as_action);
+
+  recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
+  file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
+  if (show_choose_new_master_option_)
+  {
+    file_menu_->addSeparator();
+    file_menu_->addAction("Change &Master", this, SLOT(changeMaster()));
+  }
+  file_menu_->addAction("&Reset", this, SLOT(reset()));
+  QAction* file_menu_quit_action =
+      file_menu_->addAction("&Quit", this, SLOT(close()), QKeySequence("Ctrl+Q"));
+  file_menu_quit_action->setObjectName("actQuit");
+  this->addAction(file_menu_quit_action);
+
+  view_menu_ = menuBar()->addMenu("&Panels");
+  view_menu_->addAction("Add &New Panel", this, SLOT(openNewPanelDialog()));
+  delete_view_menu_ = view_menu_->addMenu("&Delete Panel");
+  delete_view_menu_->setEnabled(false);
+
+  QToolButton* close_button = new QToolButton();
+  close_button->setText("X");
+  close_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  close_button->setFixedSize(40, 20);
+  close_button->setStyleSheet("font-size: 14px;"); 
+  connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
+
+  QWidget *widget = new QWidget(this);
+  QHBoxLayout *layout = new QHBoxLayout(widget);
+    status_label_->setMinimumWidth(750);
+    status_label_->setMaximumWidth(800);
+    fps_label_->setMaximumWidth(50);
+    layout->addWidget(status_label_);
+    layout->addWidget(fps_label_);
+
+  layout->addWidget(close_button);
+  layout->setContentsMargins(2, 2, 2, 2); // Remove margins
+  layout->setAlignment(Qt::AlignRight); // Align button to the right
+  widget->setLayout(layout);
+  menuBar()->setCornerWidget(widget, Qt::TopRightCorner);
+
+}
+
 } // end namespace rviz

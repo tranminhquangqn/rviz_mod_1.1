@@ -55,7 +55,7 @@ public:
 
   /** Start everything.  Pass in command line arguments.
    * @return false on failure, true on success. */
-  virtual bool init(int argc, char** argv);
+  bool init(int argc, char** argv);
 
 // private Q_SLOTS:
 public Q_SLOTS:

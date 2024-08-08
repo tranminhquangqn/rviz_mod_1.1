@@ -112,7 +112,10 @@ void VisualizerAppMod::setApp(QApplication* app)
   app_ = app;
 }
 
-bool VisualizerAppMod::init(int argc, char** argv,RenderPanel* render_panel_)
+bool VisualizerAppMod::init(int argc, char** argv
+      ,QtQuickOgreRenderWindow* renderWindow
+      ,QString configPath
+      )
 {
   ROS_INFO("rviz version %s", get_version().c_str());
   ROS_INFO("compiled against Qt version " QT_VERSION_STR);
@@ -135,6 +138,7 @@ bool VisualizerAppMod::init(int argc, char** argv,RenderPanel* render_panel_)
     startContinueChecker();
 
     std::string display_config, fixed_frame, splash_path, help_path;
+    display_config = configPath.toUtf8().constData();
     int force_gl_version = 0;
 
     po::options_description options;
@@ -205,6 +209,7 @@ bool VisualizerAppMod::init(int argc, char** argv,RenderPanel* render_panel_)
       RenderSystem::forceNoStereo();
 
     frame_ = new VisualizationFrameMod();
+    frame_->setWindowFlags(frame_->windowFlags() | Qt::MSWindowsFixedSizeDialogHint);//added
     frame_->setApp(this->app_);
     if (!help_path.empty())
     {
@@ -214,7 +219,8 @@ bool VisualizerAppMod::init(int argc, char** argv,RenderPanel* render_panel_)
     if (vm.count("splash-screen"))
       frame_->setSplashPath(QString::fromStdString(splash_path));
 
-    frame_->initialize(QString::fromStdString(display_config),render_panel_);
+    frame_->initialize(QString::fromStdString(display_config),renderWindow);
+    //frame_->initialize(configPath,renderWindow);
 
     // if (!fixed_frame.empty())
     //   frame_->getManager()->setFixedFrame(QString::fromStdString(fixed_frame));

@@ -26,8 +26,6 @@ public:
   bool getLoaded() const;
   rviz::QuickVisualizationFrame* frame_;
 
-  Q_INVOKABLE void setInitApp(QApplication* mainApp,int argc,char** argv);
-
 Q_SIGNALS:
   void frameChanged(rviz::QuickVisualizationFrame* frame);
   void sourceChanged(const QString &source);

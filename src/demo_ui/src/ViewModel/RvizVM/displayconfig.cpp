@@ -83,8 +83,3 @@ void DisplayConfig::updateConfig()
   loaded_ = true;
   Q_EMIT loadedChanged(loaded_);
 }
-
-void DisplayConfig::setInitApp(QApplication* mainApp,int argc,char** argv)
-{
-  frame_->setInitApp(mainApp,argc,argv);
-}

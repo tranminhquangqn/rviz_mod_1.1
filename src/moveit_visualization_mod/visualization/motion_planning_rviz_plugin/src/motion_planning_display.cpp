@@ -227,7 +227,6 @@ void MotionPlanningDisplay::onInitialize()
 
   rviz::WindowManagerInterface* window_context = context_->getWindowManager();
   frame_ = new MotionPlanningFrame(this, context_, window_context ? window_context->getParentWindow() : nullptr);
-  //frame_ = new MotionPlanningFrame(this, context_, appWidget_ ? appWidget_ : nullptr);
   
   connect(frame_, SIGNAL(configChanged()), this->getModel(), SIGNAL(configChanged()));
   resetStatusTextColor();
@@ -236,18 +235,18 @@ void MotionPlanningDisplay::onInitialize()
   // immediately switch to next trajectory display after planning
   connect(frame_, SIGNAL(planningFinished()), trajectory_visual_.get(), SLOT(interruptCurrentDisplay()));
 
-  // if (window_context)
-  // {
-  //   frame_dock_ = window_context->addPane(getName(), frame_);
-  //   connect(frame_dock_, SIGNAL(visibilityChanged(bool)), this, SLOT(motionPanelVisibilityChange(bool)));
-  //   frame_dock_->setIcon(getIcon());
-  // }
+  if (window_context)
+  {
+    frame_dock_ = window_context->addPane(getName(), frame_);
+    connect(frame_dock_, SIGNAL(visibilityChanged(bool)), this, SLOT(motionPanelVisibilityChange(bool)));
+    frame_dock_->setIcon(getIcon());
+  }
 
   int_marker_display_ = context_->getDisplayFactory()->make("rviz/InteractiveMarkers");
   int_marker_display_->initialize(context_);
 
   text_display_scene_node_ = planning_scene_node_->createChildSceneNode();
-  text_to_display_ = new rviz::MovableText("");//"EMPTY"
+  text_to_display_ = new rviz::MovableText("EMPTY");
   text_to_display_->setTextAlignment(rviz::MovableText::H_CENTER, rviz::MovableText::V_CENTER);
   text_to_display_->setCharacterHeight(metrics_text_height_property_->getFloat());
   text_to_display_->showOnTop();

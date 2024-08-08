@@ -1,13 +1,24 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.2
+
 import ros.rviz 1.0
-import MyModule 1.0
+
+// import WidgetItem 1.0
+
 
 ApplicationWindow {
-  id: root
+  id: mainWindow
   width: 1500
-  height: 768
+  height: 900
   visible: true
+  property int rvizConfigHeight: 410
+  // onActiveChanged: {
+  //     if (!active && !frameLoad.isFocus()) {
+  //         frameLoad.hideRviz()
+  //     }
+  // }
+  
   // Loader {
   //   id: loader
   //   anchors.fill: parent
@@ -16,12 +27,21 @@ ApplicationWindow {
   // }
   // Component {
   //   id:rvizComp
-           
+      // WidgetItem {
+      //     id:widgetItem1
+      //     width: parent.width
+      //     height: parent.height/2
+      //     Component.onCompleted:{
+      //       frameLoad.viewDisplay(widgetItem1)
+      //       frameLoad.forceActiveFocus()
+      //       //console.log("widgetItem1 active focus "+widgetItem1.hasActiveFocus() )
+      //     }
+      // }
     Item {
       id:compView
-      anchors.right: parent.right
+      anchors.bottom:parent.bottom
+      width:parent.width
       height:parent.height
-      width:parent.width/2
       VisualizationFrame {
         id: visualizationFrame
         anchors.fill: parent
@@ -30,55 +50,53 @@ ApplicationWindow {
       Rectangle {
         anchors.fill: parent
         color: "lightblue"
-
         RenderWindow {
           id: renderWindow
           anchors.fill: parent
-        }
-      }
-      // SimpleGrid {
-      //   id: grid
-      //   frame: visualizationFrame
-      //   lineWidth: 10
-      //   color: "lightblue"
-      // }
-      DisplayConfig {
-        id: displayConfig
-        frame: visualizationFrame
-        // source:"/home/quang/rviz_mod/src/default.rviz" //Set this directly in test/displaycongig.cpp
-        Component.onCompleted: {
-            displayConfig.setInitApp(mainApp,argc,0)
+          Component.onCompleted:{
+            frameLoad.initRvizApp(renderWindow,mainWindow)
+          }
         }
       }
       Row {
-        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
-        Button {
-          text: "Red Grid"
-          onClicked: grid.color = "red"
-        }
-        Button {
-          text: "Blue Grid"
-          onClicked: grid.color = "blue"
-        }
-        Button {
-          text: "Default Grid"
-          onClicked: grid.color = "lightblue"
-        }
         Button {
           text: "open plug"
           onClicked: {
             frameLoad.openFrame(visualizationFrame)
           }
         }
+        Button {
+          text: frameLoad.configVisible?"Hide Config":"Show Config"
+          onClicked: {
+            frameLoad.showRvizBtn()
+          }
+        }
+        Button {
+          text: "Test delay"
+          onClicked: {
+            popupDelay.restart()
+          }
+        }
+        
       }
+      Timer{
+        id: popupDelay
+        interval:3000
+        onTriggered:{
+          // frameLoad.hideRviz()
+          console.log("ifocus"+frameLoad.isFocus())
+        }
+      }
+
     }
   // }
   Button {
     text: "visible"
     anchors.horizontalCenter: parent.horizontalCenter
     onClicked: {
-      loader.visible=!loader.visible
+      configFrame.visible=!configFrame.visible
     }
   }
 }

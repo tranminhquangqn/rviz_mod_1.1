@@ -564,7 +564,7 @@ void MotionPlanningFrame::enable()
   ui_->object_status->setText("");
 
   // activate the frame
-  // parentWidget()->show();
+  parentWidget()->show();//
 }
 
 void MotionPlanningFrame::disable()

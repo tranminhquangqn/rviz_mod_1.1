@@ -90,8 +90,6 @@ public:
 
   ~MotionPlanningDisplay() override;
 
-  // void appInit(QWidget* appWidget);
-  // QWidget* appWidget_;
 
   void load(const rviz::Config& config) override;
   void save(rviz::Config config) const override;

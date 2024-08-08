@@ -146,21 +146,23 @@ VisualizationFrame::VisualizationFrame(QWidget* parent)
   splash_path_ =
       QString::fromStdString((fs::path(package_path_) / "images/splash.png").BOOST_FILE_STRING());
 
-  QToolButton* reset_button = new QToolButton();
-  reset_button->setText("Reset");
-  reset_button->setContentsMargins(0, 0, 0, 0);
-  statusBar()->addPermanentWidget(reset_button, 0);
-  connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
+  // QToolButton* reset_button = new QToolButton();
+  // reset_button->setText("Reset");
+  // reset_button->setContentsMargins(0, 0, 0, 0);
+  // statusBar()->addPermanentWidget(reset_button, 0);
+  // connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
 
   status_label_ = new QLabel("");
-  statusBar()->addPermanentWidget(status_label_, 1);
+  //statusBar()->addPermanentWidget(status_label_, 1);
   connect(this, SIGNAL(statusUpdate(const QString&)), status_label_, SLOT(setText(const QString&)));
 
   fps_label_ = new QLabel("");
   fps_label_->setMinimumWidth(40);
-  fps_label_->setAlignment(Qt::AlignRight);
-  statusBar()->addPermanentWidget(fps_label_, 0);
-  original_status_bar_ = statusBar();
+  // fps_label_->setAlignment(Qt::AlignRight);
+  // statusBar()->addPermanentWidget(fps_label_, 0);
+  // original_status_bar_ = statusBar();
+
+  // statusBar()->setSizeGripEnabled(false);//added
 
   setWindowTitle("RViz[*]");
 }
@@ -195,10 +197,10 @@ void VisualizationFrame::updateFps()
     float fps = frame_count_ / wall_diff.toSec();
     frame_count_ = 0;
     last_fps_calc_time_ = ros::WallTime::now();
-    if (original_status_bar_ == statusBar())
-    {
+    // if (original_status_bar_ == statusBar())
+    // {
       fps_label_->setText(QString::number(int(fps)) + QString(" fps"));
-    }
+    // }
   }
 }
 
@@ -1382,24 +1384,24 @@ void VisualizationFrame::onDeletePanel()
 
 void VisualizationFrame::setFullScreen(bool full_screen)
 {
-  Qt::WindowStates state = windowState();
-  if (full_screen == state.testFlag(Qt::WindowFullScreen))
-    return;
-  Q_EMIT(fullScreenChange(full_screen));
+  // Qt::WindowStates state = windowState();
+  // if (full_screen == state.testFlag(Qt::WindowFullScreen))
+  //   return;
+  // Q_EMIT(fullScreenChange(full_screen));
 
-  // when switching to fullscreen, remember visibility state of toolbar
-  if (full_screen)
-    toolbar_visible_ = toolbar_->isVisible();
-  menuBar()->setVisible(!full_screen);
-  toolbar_->setVisible(!full_screen && toolbar_visible_);
-  statusBar()->setVisible(!full_screen);
-  setHideButtonVisibility(!full_screen);
+  // // when switching to fullscreen, remember visibility state of toolbar
+  // if (full_screen)
+  //   toolbar_visible_ = toolbar_->isVisible();
+  // menuBar()->setVisible(!full_screen);
+  // toolbar_->setVisible(!full_screen && toolbar_visible_);
+  // statusBar()->setVisible(!full_screen);
+  // setHideButtonVisibility(!full_screen);
 
-  if (full_screen)
-    setWindowState(state | Qt::WindowFullScreen);
-  else
-    setWindowState(state & ~Qt::WindowFullScreen);
-  show();
+  // if (full_screen)
+  //   setWindowState(state | Qt::WindowFullScreen);
+  // else
+  //   setWindowState(state & ~Qt::WindowFullScreen);
+  // show();
 }
 
 void VisualizationFrame::exitFullScreen()

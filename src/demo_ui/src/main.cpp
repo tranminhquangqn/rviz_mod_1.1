@@ -42,16 +42,12 @@
 #include "rviz/displays_panel.h"
 #include "rviz/quick_visualization_frame.h"
 
-#include "ViewModel/RvizVM/simplegrid.h"
-#include "ViewModel/RvizVM/displayconfig.h"
-#include "ViewModel/RvizVM/displayconfig.h"
 
-#include "rviz/visualizer_app.h"
-#include "rviz/visualizer_app_mod.h"
-#include "rviz/visualization_frame.h"
 
 //panel
 #include "ViewModel/RvizVM/frameLoad.h"
+//#include "ViewModel/RvizVM/widgetitem2.h"
+#include <QQuickWindow>
 
 using namespace rviz;
 
@@ -59,28 +55,18 @@ int main(int argc, char **argv)
 {
   qputenv("QSG_RENDER_LOOP","basic");
   QApplication app( argc, argv );
-  // ros::init( argc, argv, "quick_render_panel_test" );
-
-  // rviz::VisualizerApp* widgetRviz = new rviz::VisualizerApp();
-  // widgetRviz->setApp(&app);
-  // widgetRviz->init(argc, argv);
 
   rviz::QuickVisualizationFrame::registerTypes();
-  qmlRegisterType<SimpleGrid>("MyModule", 1, 0, "SimpleGrid");
-  qmlRegisterType<DisplayConfig>("MyModule", 1, 0, "DisplayConfig");
+
+  // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
-  engine.rootContext()->setContextProperty("mainApp", &app);
-  engine.rootContext()->setContextProperty("argc", argc);
-  engine.rootContext()->setContextProperty("argv", reinterpret_cast<quintptr>(argv));
 
-  FrameLoad frameLoad();
-  //FrameLoad frameLoad(&widgetWindow);
+  FrameLoad frameLoad(&app, argc, argv);
   engine.rootContext()->setContextProperty(QStringLiteral("frameLoad"), &frameLoad);
   engine.rootContext()->setContextProperty("rvizPath", QString::fromStdString(ros::package::getPath("rviz")));
- 
- 
   engine.load(url);
+
   return app.exec();
 }

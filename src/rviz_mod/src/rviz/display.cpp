@@ -326,14 +326,8 @@ void Display::onEnableChanged()
     else if (associated_widget_)
       associated_widget_->show();
 
-
-      /////////////////////////////////////////////////////// ignore moveit here **********
-    // std::string currentTypeName = typeid(*this).name();
-    // if(currentTypeName!="N18moveit_rviz_plugin21MotionPlanningDisplayE"){
-    // if (isEnabled()) // status might have changed, e.g. if show() failed
-    //   onEnable();
-    // }
-    onEnable();
+    if (isEnabled()) // status might have changed, e.g. if show() failed
+      onEnable();
   }
   else
   {
