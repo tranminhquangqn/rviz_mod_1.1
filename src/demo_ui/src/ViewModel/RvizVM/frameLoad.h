@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QDebug>
 
-#include "widgetitem2.h"
+// #include "widgetitem2.h"
+#include <QQuickWindow>
 #include <QWidgetItem>
 #include <QQuickItem>
 #include <QWidget>
@@ -12,8 +13,6 @@
 
 #include "rviz/visualization_manager.h"
 #include "rviz/displays_panel.h"
-// #include "moveit/motion_planning_rviz_plugin/motion_planning_display.h"
-// #include <moveit/motion_planning_rviz_plugin/motion_planning_frame.h>
 
 #include "rviz/visualizer_app_mod.h"
 #include <QApplication>
@@ -22,7 +21,7 @@
 #include "rviz/visualization_frame_mod.h"
 #include <rviz/window_manager_interface.h>
 
-#include <QQuickWindow>
+
 
 class FrameLoad : public QObject {
     Q_OBJECT
@@ -43,9 +42,9 @@ public:
         return m_configVisible;
     }
 
-    Q_INVOKABLE void viewDisplay(WidgetItem2* widgetPanel){
-        widgetPanel->setWidget(m_frame);
-    }
+    // Q_INVOKABLE void viewDisplay(WidgetItem2* widgetPanel){
+    //     widgetPanel->setWidget(m_frame);
+    // }
 
     Q_INVOKABLE void initRvizApp(rviz::QtQuickOgreRenderWindow* renderWindow,QQuickWindow *qmlWindow){
         rviz::VisualizerAppMod* widgetRviz = new rviz::VisualizerAppMod();

@@ -37,17 +37,11 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 
-#include "rviz/visualization_manager.h"
-#include "rviz/render_panel.h"
-#include "rviz/displays_panel.h"
 #include "rviz/quick_visualization_frame.h"
-
-
 
 //panel
 #include "ViewModel/RvizVM/frameLoad.h"
 //#include "ViewModel/RvizVM/widgetitem2.h"
-#include <QQuickWindow>
 
 using namespace rviz;
 

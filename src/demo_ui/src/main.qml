@@ -33,8 +33,6 @@ ApplicationWindow {
       //     height: parent.height/2
       //     Component.onCompleted:{
       //       frameLoad.viewDisplay(widgetItem1)
-      //       frameLoad.forceActiveFocus()
-      //       //console.log("widgetItem1 active focus "+widgetItem1.hasActiveFocus() )
       //     }
       // }
     Item {
