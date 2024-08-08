@@ -114,8 +114,7 @@ namespace rviz
 {
 VisualizationFrameMod::VisualizationFrameMod()
 {
-  setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);//Popup WindowStaysOnTopHint WindowCloseButtonHint FramelessWindowHint
-  //setWindowFlags(Qt::Dialog);//Popup
+  setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
   //setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -302,26 +301,24 @@ void VisualizationFrameMod::initMenus()
   delete_view_menu_ = view_menu_->addMenu("&Delete Panel");
   delete_view_menu_->setEnabled(false);
 
-  QToolButton* close_button = new QToolButton();
-  close_button->setText("X");
-  close_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-  close_button->setFixedSize(40, 20);
-  close_button->setStyleSheet("font-size: 14px;"); 
-  connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
-
-  QWidget *widget = new QWidget(this);
-  QHBoxLayout *layout = new QHBoxLayout(widget);
-    status_label_->setMinimumWidth(750);
-    status_label_->setMaximumWidth(800);
-    fps_label_->setMaximumWidth(50);
-    layout->addWidget(status_label_);
-    layout->addWidget(fps_label_);
-
-  layout->addWidget(close_button);
-  layout->setContentsMargins(2, 2, 2, 2); // Remove margins
-  layout->setAlignment(Qt::AlignRight); // Align button to the right
-  widget->setLayout(layout);
-  menuBar()->setCornerWidget(widget, Qt::TopRightCorner);
+  // QWidget *widget = new QWidget(this);
+  // QHBoxLayout *layout = new QHBoxLayout(widget);
+  // QToolButton* close_button = new QToolButton();
+  // close_button->setText("X");
+  // close_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+  // close_button->setFixedSize(40, 20);
+  // close_button->setStyleSheet("font-size: 14px;"); 
+  // connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
+  // status_label_->setMinimumWidth(750);
+  // status_label_->setMaximumWidth(800);
+  // fps_label_->setMaximumWidth(50);
+  // layout->addWidget(status_label_);
+  // layout->addWidget(fps_label_);
+  // layout->addWidget(close_button);
+  // layout->setContentsMargins(2, 2, 2, 2); // Remove margins
+  // layout->setAlignment(Qt::AlignRight); // Align button to the right
+  // widget->setLayout(layout);
+  // menuBar()->setCornerWidget(widget, Qt::TopRightCorner);
 
 }
 

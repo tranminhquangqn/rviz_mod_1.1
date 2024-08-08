@@ -40,7 +40,7 @@
 #include "rviz/quick_visualization_frame.h"
 
 //panel
-#include "ViewModel/RvizVM/frameLoad.h"
+#include "ViewModel/RvizVM/rvizLoader.h"
 //#include "ViewModel/RvizVM/widgetitem2.h"
 
 using namespace rviz;
@@ -57,8 +57,8 @@ int main(int argc, char **argv)
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
 
-  FrameLoad frameLoad(&app, argc, argv);
-  engine.rootContext()->setContextProperty(QStringLiteral("frameLoad"), &frameLoad);
+  RvizLoader rvizLoader(&app, argc, argv);
+  engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rvizLoader);
   engine.rootContext()->setContextProperty("rvizPath", QString::fromStdString(ros::package::getPath("rviz")));
   engine.load(url);
 

@@ -209,7 +209,6 @@ bool VisualizerAppMod::init(int argc, char** argv
       RenderSystem::forceNoStereo();
 
     frame_ = new VisualizationFrameMod();
-    frame_->setWindowFlags(frame_->windowFlags() | Qt::MSWindowsFixedSizeDialogHint);//added
     frame_->setApp(this->app_);
     if (!help_path.empty())
     {

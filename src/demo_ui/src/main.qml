@@ -6,7 +6,6 @@ import ros.rviz 1.0
 
 // import WidgetItem 1.0
 
-
 ApplicationWindow {
   id: mainWindow
   width: 1500
@@ -14,8 +13,8 @@ ApplicationWindow {
   visible: true
   property int rvizConfigHeight: 410
   // onActiveChanged: {
-  //     if (!active && !frameLoad.isFocus()) {
-  //         frameLoad.hideRviz()
+  //     if (!active && !rvizLoader.isFocus()) {
+  //         rvizLoader.hideRviz()
   //     }
   // }
   
@@ -32,7 +31,7 @@ ApplicationWindow {
       //     width: parent.width
       //     height: parent.height/2
       //     Component.onCompleted:{
-      //       frameLoad.viewDisplay(widgetItem1)
+      //       rvizLoader.viewDisplay(widgetItem1)
       //     }
       // }
     Item {
@@ -52,7 +51,7 @@ ApplicationWindow {
           id: renderWindow
           anchors.fill: parent
           Component.onCompleted:{
-            frameLoad.initRvizApp(renderWindow,mainWindow)
+            rvizLoader.initRvizApp(renderWindow,mainWindow)
           }
         }
       }
@@ -62,13 +61,13 @@ ApplicationWindow {
         Button {
           text: "open plug"
           onClicked: {
-            frameLoad.openFrame(visualizationFrame)
+            rvizLoader.openFrame(visualizationFrame)
           }
         }
         Button {
-          text: frameLoad.configVisible?"Hide Config":"Show Config"
+          text: rvizLoader.configVisible?"Hide Config":"Show Config"
           onClicked: {
-            frameLoad.showRvizBtn()
+            rvizLoader.showRvizBtn()
           }
         }
         Button {
@@ -83,20 +82,13 @@ ApplicationWindow {
         id: popupDelay
         interval:3000
         onTriggered:{
-          // frameLoad.hideRviz()
-          console.log("ifocus"+frameLoad.isFocus())
+          // rvizLoader.hideRviz()
+          console.log("ifocus"+rvizLoader.isFocus())
         }
       }
 
     }
   // }
-  Button {
-    text: "visible"
-    anchors.horizontalCenter: parent.horizontalCenter
-    onClicked: {
-      configFrame.visible=!configFrame.visible
-    }
-  }
 }
 
 

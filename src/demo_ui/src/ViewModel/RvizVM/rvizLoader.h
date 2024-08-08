@@ -23,19 +23,18 @@
 
 
 
-class FrameLoad : public QObject {
+class RvizLoader : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool configVisible READ getConfigVisible WRITE setConfigVisible NOTIFY configVisibleChanged)
 public:
     rviz::VisualizationManager* m_manager;
-    FrameLoad(QApplication* qapp, int argc, char** argv, QObject* parent = nullptr) : QObject(parent) {
+    RvizLoader(QApplication* qapp, int argc, char** argv, QObject* parent = nullptr) : QObject(parent) {
         m_qapp=qapp;
         m_argc=argc;
         m_argv=argv;
         m_configVisible=false;
-        
     }
-    ~FrameLoad(){
+    ~RvizLoader(){
         delete widgetRviz;
     }
     bool getConfigVisible(){
@@ -55,12 +54,12 @@ public:
         connect(m_frame, SIGNAL(frameCloseSignal(bool)), this, SLOT(setConfigVisible(bool)));
         m_mainWindow=qmlWindow;
 
-        QObject::connect(m_mainWindow, &QQuickWindow::xChanged, [=]() {
-            m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
-        });
-        QObject::connect(m_mainWindow, &QQuickWindow::yChanged, [=]() {
-            m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
-        });
+        // QObject::connect(m_mainWindow, &QQuickWindow::xChanged, [=]() {
+        //     m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
+        // });
+        // QObject::connect(m_mainWindow, &QQuickWindow::yChanged, [=]() {
+        //     m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
+        // });
     }
     Q_INVOKABLE bool isFocus(){
         return m_frame->hasFocus();
@@ -95,11 +94,11 @@ public Q_SLOTS:
             m_frame->close();
             setConfigVisible(false);
         }else{
-            m_frame->setGeometry(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid
-                ,m_mainWindow->y()
+            m_frame->setGeometry(m_mainWindow->x()+(m_mainWindow->width()/2)-(rvizConfigWid/2)
+                ,m_mainWindow->y()+(rvizConfigHei/2)-100
                 ,rvizConfigWid
                 ,rvizConfigHei);
-            m_frame->setFixedSize(m_frame->size());
+            //m_frame->setFixedSize(m_frame->size());
             m_frame->show();
             m_frame->setFocus();
             setConfigVisible(true);

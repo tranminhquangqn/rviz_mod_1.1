@@ -102,7 +102,7 @@ add_definitions(-DQT_NO_KEYWORDS)
 set(SOURCES_FILES
   src/ViewModel/RvizVM/displayconfig.cpp
   src/ViewModel/RvizVM/simplegrid.cpp
-  src/ViewModel/RvizVM/frameLoad.h
+  src/ViewModel/RvizVM/rvizLoader.h
   src/main.cpp
   src/qml.qrc
 )
