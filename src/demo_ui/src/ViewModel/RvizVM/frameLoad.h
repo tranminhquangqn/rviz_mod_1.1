@@ -99,7 +99,7 @@ public Q_SLOTS:
                 ,m_mainWindow->y()
                 ,rvizConfigWid
                 ,rvizConfigHei);
-            // m_frame->setFixedSize(m_frame->size());
+            m_frame->setFixedSize(m_frame->size());
             m_frame->show();
             m_frame->setFocus();
             setConfigVisible(true);
