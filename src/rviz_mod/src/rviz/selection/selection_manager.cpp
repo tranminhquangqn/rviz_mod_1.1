@@ -756,9 +756,9 @@ bool SelectionManager::render(Ogre::Viewport* viewport,
   //
   // TODO: find out what part of _renderScene() actually makes this work.
   Ogre::Viewport* main_view = vis_manager_->getRenderPanel()->getViewport();
-  vis_manager_->getSceneManager()->addRenderQueueListener(this);
+  // vis_manager_->getSceneManager()->addRenderQueueListener(this);
   vis_manager_->getSceneManager()->_renderScene(main_view->getCamera(), main_view, false);
-  vis_manager_->getSceneManager()->removeRenderQueueListener(this);
+  // vis_manager_->getSceneManager()->removeRenderQueueListener(this);
 
   ros::WallTime end = ros::WallTime::now();
   ros::WallDuration d = end - start;

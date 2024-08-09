@@ -39,11 +39,6 @@ ApplicationWindow {
       anchors.bottom:parent.bottom
       width:parent.width
       height:parent.height
-      VisualizationFrame {
-        id: visualizationFrame
-        anchors.fill: parent
-        renderWindow: renderWindow
-      }
       Rectangle {
         anchors.fill: parent
         color: "lightblue"
@@ -83,7 +78,6 @@ ApplicationWindow {
         interval:3000
         onTriggered:{
           // rvizLoader.hideRviz()
-          console.log("ifocus"+rvizLoader.isFocus())
         }
       }
 
