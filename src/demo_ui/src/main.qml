@@ -39,6 +39,12 @@ ApplicationWindow {
       anchors.bottom:parent.bottom
       width:parent.width
       height:parent.height
+      VisualizationFrame {
+        id: visualizationFrame
+        anchors.fill: parent
+        renderWindow: renderWindow
+      }
+
       Rectangle {
         anchors.fill: parent
         color: "lightblue"

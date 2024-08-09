@@ -37,6 +37,7 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 
+#include "rviz/quick_visualization_frame.h"
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
 //panel
@@ -50,7 +51,8 @@ int main(int argc, char **argv)
   qputenv("QSG_RENDER_LOOP","basic");
   QApplication app( argc, argv );
 
-  qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
+  rviz::QuickVisualizationFrame::registerTypes();
+  // qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
 
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 
@@ -59,7 +61,6 @@ int main(int argc, char **argv)
 
   RvizLoader rvizLoader(&app, argc, argv);
   engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rvizLoader);
-  engine.rootContext()->setContextProperty("rvizPath", QString::fromStdString(ros::package::getPath("rviz")));
   engine.load(url);
 
   return app.exec();

@@ -35,7 +35,10 @@ public:
         m_configVisible=false;
     }
     ~RvizLoader(){
-        delete widgetRviz;
+        if (widgetRviz != nullptr) {
+            delete widgetRviz;
+            widgetRviz = nullptr;
+        }
     }
     bool getConfigVisible(){
         return m_configVisible;
