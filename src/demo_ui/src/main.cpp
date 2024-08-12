@@ -34,14 +34,12 @@
 #include <QString>
 #include <QDebug>
 
-#include <ros/ros.h>
-#include <ros/package.h>
 
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
 //panel
-#include "ViewModel/RvizVM/rvizLoader.h"
-//#include "ViewModel/RvizVM/widgetitem2.h"
+#include "ViewModel/TomoVM/rvizLoader.h"
+//#include "ViewModel/TomoVM/widgetitem2.h"
 
 using namespace rviz;
 
@@ -51,7 +49,6 @@ int main(int argc, char **argv)
   QApplication app( argc, argv );
 
   qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
-
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 
   QQmlApplicationEngine engine;

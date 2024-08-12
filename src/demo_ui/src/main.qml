@@ -4,14 +4,14 @@ import QtQuick.Layouts 1.2
 
 import ros.rviz 1.0
 
-// import WidgetItem 1.0
+import "View/TomoView"
 
 ApplicationWindow {
   id: mainWindow
   width: 1500
   height: 900
   visible: true
-  property int rvizConfigHeight: 410
+   property var panel_view: null
   onClosing: {
     rvizLoader.closeRviz()
     close.accepted = true
@@ -21,72 +21,23 @@ ApplicationWindow {
   //         rvizLoader.closeRviz()
   //     }
   // }
-  
-  // Loader {
-  //   id: loader
-  //   anchors.fill: parent
-  //   sourceComponent: rvizComp
-  //   asynchronous: true
-  // }
-  // Component {
-  //   id:rvizComp
-      // WidgetItem {
-      //     id:widgetItem1
-      //     width: parent.width
-      //     height: parent.height/2
-      //     Component.onCompleted:{
-      //       rvizLoader.viewDisplay(widgetItem1)
-      //     }
-      // }
-    Item {
-      id:compView
-      anchors.bottom:parent.bottom
-      width:parent.width
-      height:parent.height
-      Rectangle {
-        anchors.fill: parent
-        color: "lightblue"
-        RenderWindow {
-          id: renderWindow
-          anchors.fill: parent
-          Component.onCompleted:{
-            rvizLoader.initRvizApp(renderWindow,mainWindow)
-          }
-        }
-      }
-      Row {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        Button {
-          text: "open plug"
-          onClicked: {
-            rvizLoader.openFrame(visualizationFrame)
-          }
-        }
-        Button {
-          text: rvizLoader.configVisible?"Hide Config":"Show Config"
-          onClicked: {
-            rvizLoader.showRvizBtn()
-          }
-        }
-        Button {
-          text: "Test delay"
-          onClicked: {
-            popupDelay.restart()
-          }
-        }
-        
-      }
-      Timer{
-        id: popupDelay
-        interval:3000
-        onTriggered:{
-          rvizLoader.closeRviz()
-        }
-      }
 
-    }
-  // }
+  Component.onCompleted:{
+    createRviz()
+  }
+  function createRviz() {
+      var component;
+      component = Qt.createComponent("View/TomoView/RvizPanel.qml");
+      if (component.status === Component.Ready){
+          panel_view = component.createObject(mainWindow);
+          if (panel_view === null) {
+              console.log("StackLayout >>>> Error creating object RvizPanel.qml");
+          }
+      }
+      else if (component.status === Component.Error) {
+          console.log("StackLayout >>>> Error loading component:", component.errorString());
+      }
+  }
 }
 
 

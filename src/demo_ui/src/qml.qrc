@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-	<file>qml/quick_render_panel_test.qml</file>
+	<file>View/TomoView/RvizPanel.qml</file>
     </qresource>
 </RCC>
