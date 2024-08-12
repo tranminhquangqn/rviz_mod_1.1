@@ -674,10 +674,11 @@ void VisualizationFrame::openNewToolDialog()
 {
   QString class_id;
   QStringList empty;
+  QString display_name;
   ToolManager* tool_man = manager_->getToolManager();
 
   NewObjectDialog* dialog =
-      new NewObjectDialog(tool_man->getFactory(), "Tool", empty, tool_man->getToolClasses(), &class_id);
+      new NewObjectDialog(tool_man->getFactory(), "Tool", empty, tool_man->getToolClasses(), &class_id, &display_name,this);
   manager_->stopUpdate();
   if (dialog->exec() == QDialog::Accepted)
   {

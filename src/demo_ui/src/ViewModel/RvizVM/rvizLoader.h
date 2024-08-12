@@ -28,12 +28,12 @@ class RvizLoader : public QObject {
     Q_PROPERTY(bool configVisible READ getConfigVisible WRITE setConfigVisible NOTIFY configVisibleChanged)
 public:
     rviz::VisualizationManager* m_manager;
-    RvizLoader(QApplication* qapp, int argc, char** argv, QObject* parent = nullptr) : QObject(parent) {
-        m_qapp=qapp;
-        m_argc=argc;
-        m_argv=argv;
-        m_configVisible=false;
-    }
+    RvizLoader(QApplication* qapp, int argc, char** argv, QObject* parent = nullptr) : QObject(parent) 
+        ,m_qapp(qapp)
+        ,m_argc(argc)
+        ,m_argv(argv)
+        ,m_configVisible(false)
+    {}
     ~RvizLoader(){
         if (widgetRviz != nullptr) {
             delete widgetRviz;
@@ -107,7 +107,7 @@ public Q_SLOTS:
             setConfigVisible(true);
         }
     }
-    void hideRviz(){
+    void closeRviz(){
         m_frame->close();
         setConfigVisible(false);
     }
@@ -115,13 +115,13 @@ Q_SIGNALS:
     void configVisibleChanged();
 
 private:
-    QWidget* widgetWindow;
-    QQuickWindow *m_mainWindow;
-    rviz::DisplaysPanel* displays_panel;
+    QWidget* widgetWindow=nullptr;
+    QQuickWindow *m_mainWindow=nullptr;
+    rviz::DisplaysPanel* displays_panel=nullptr;
 
-    rviz::VisualizationManager* m_vman;
-    rviz::VisualizationFrameMod* m_frame;
-    rviz::VisualizerAppMod* widgetRviz;
+    rviz::VisualizationManager* m_vman=nullptr;
+    rviz::VisualizationFrameMod* m_frame=nullptr;
+    rviz::VisualizerAppMod* widgetRviz=nullptr;
     QApplication* m_qapp;
     int m_argc;
     char** m_argv;

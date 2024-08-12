@@ -100,8 +100,6 @@ link_directories(${catkin_LIBRARY_DIRS})
 add_definitions(-DQT_NO_KEYWORDS)
 
 set(SOURCES_FILES
-  src/ViewModel/RvizVM/displayconfig.cpp
-  src/ViewModel/RvizVM/simplegrid.cpp
   src/ViewModel/RvizVM/rvizLoader.h
   src/main.cpp
   src/qml.qrc

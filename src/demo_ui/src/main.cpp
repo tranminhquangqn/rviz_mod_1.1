@@ -37,7 +37,6 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 
-#include "rviz/quick_visualization_frame.h"
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
 //panel
@@ -51,8 +50,7 @@ int main(int argc, char **argv)
   qputenv("QSG_RENDER_LOOP","basic");
   QApplication app( argc, argv );
 
-  rviz::QuickVisualizationFrame::registerTypes();
-  // qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
+  qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
 
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 

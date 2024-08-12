@@ -12,9 +12,13 @@ ApplicationWindow {
   height: 900
   visible: true
   property int rvizConfigHeight: 410
+  onClosing: {
+    rvizLoader.closeRviz()
+    close.accepted = true
+  }
   // onActiveChanged: {
   //     if (!active && !rvizLoader.isFocus()) {
-  //         rvizLoader.hideRviz()
+  //         rvizLoader.closeRviz()
   //     }
   // }
   
@@ -39,12 +43,6 @@ ApplicationWindow {
       anchors.bottom:parent.bottom
       width:parent.width
       height:parent.height
-      VisualizationFrame {
-        id: visualizationFrame
-        anchors.fill: parent
-        renderWindow: renderWindow
-      }
-
       Rectangle {
         anchors.fill: parent
         color: "lightblue"
@@ -83,7 +81,7 @@ ApplicationWindow {
         id: popupDelay
         interval:3000
         onTriggered:{
-          // rvizLoader.hideRviz()
+          rvizLoader.closeRviz()
         }
       }
 
