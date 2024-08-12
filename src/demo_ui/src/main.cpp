@@ -38,7 +38,7 @@
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
 //panel
-#include "ViewModel/TomoVM/rvizLoader.h"
+#include "ViewModel/TomoVM/rviz_loader.h"
 //#include "ViewModel/TomoVM/widgetitem2.h"
 
 using namespace rviz;
@@ -46,7 +46,7 @@ using namespace rviz;
 int main(int argc, char **argv)
 {
   qputenv("QSG_RENDER_LOOP","basic");
-  QApplication app( argc, argv );
+  QApplication qapp( argc, argv );
 
   qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
@@ -54,9 +54,9 @@ int main(int argc, char **argv)
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
 
-  RvizLoader rvizLoader(&app, argc, argv);
-  engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rvizLoader);
+  RvizLoader rviz_loader(argc, argv, &qapp);
+  engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rviz_loader);
   engine.load(url);
 
-  return app.exec();
+  return qapp.exec();
 }

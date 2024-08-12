@@ -28,8 +28,8 @@ class RvizLoader : public QObject {
     Q_PROPERTY(bool configVisible READ getConfigVisible WRITE setConfigVisible NOTIFY configVisibleChanged)
 public:
     rviz::VisualizationManager* m_manager;
-    RvizLoader(QApplication* qapp, int argc, char** argv, QObject* parent = nullptr) : QObject(parent) 
-        ,m_qapp(qapp)
+    RvizLoader(int& argc, char** argv, QApplication* qapp) :
+        m_qapp(qapp)
         ,m_argc(argc)
         ,m_argv(argv)
         ,m_configVisible(false)
