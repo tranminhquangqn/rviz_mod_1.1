@@ -48,6 +48,7 @@ QtQuickOgreRenderWindow::QtQuickOgreRenderWindow(QQuickItem *parent)
   setSmooth(false);
   setAcceptHoverEvents(true);
   setAcceptedMouseButtons(Qt::AllButtons);
+  setAntialiasing(true);
   // setAcceptHoverEvents(false);
   // setAcceptedMouseButtons(nullptr);
 

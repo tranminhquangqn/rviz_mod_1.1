@@ -31,11 +31,11 @@ ApplicationWindow {
       if (component.status === Component.Ready){
           panel_view = component.createObject(mainWindow);
           if (panel_view === null) {
-              console.log("StackLayout >>>> Error creating object RvizPanel.qml");
+              console.log("Error creating object RvizPanel.qml");
           }
       }
       else if (component.status === Component.Error) {
-          console.log("StackLayout >>>> Error loading component:", component.errorString());
+          console.log("Error loading component:", component.errorString());
       }
   }
 }

@@ -41,20 +41,20 @@
 #include "ViewModel/TomoVM/rviz_loader.h"
 //#include "ViewModel/TomoVM/widgetitem2.h"
 
-using namespace rviz;
+// using namespace rviz;
 
 int main(int argc, char **argv)
 {
   qputenv("QSG_RENDER_LOOP","basic");
   QApplication qapp( argc, argv );
 
-  qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
+  qmlRegisterType<rviz::QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
 
-  RvizLoader rviz_loader(argc, argv, &qapp);
+  RvizVM rviz_loader(argc, argv, &qapp, nullptr);
   engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rviz_loader);
   engine.load(url);
 
