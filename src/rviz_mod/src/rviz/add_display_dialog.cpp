@@ -182,6 +182,7 @@ AddDisplayDialog::AddDisplayDialog(DisplayFactory* factory,
   , topic_output_(topic_output)
   , datatype_output_(datatype_output)
 {
+	setWindowModality(Qt::WindowModal);
   //***** Layout
 
   // Display Type group

@@ -110,8 +110,8 @@ void DisplaysPanel::onNewDisplay()
   QStringList empty;
 
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  AddDisplayDialog dialog(vis_manager_->getDisplayFactory(), "Display", empty, empty, &lookup_name,
-                          &display_name, &topic, &datatype);
+  AddDisplayDialog dialog(vis_manager_->getDisplayFactory(), "Display", empty, empty, &lookup_name, &display_name, &topic, &datatype,
+						  this);
   QApplication::restoreOverrideCursor();
 
   vis_manager_->stopUpdate();
@@ -217,14 +217,27 @@ void DisplaysPanel::onRenameDisplay()
   }
 
   QString old_name = display_to_rename->getName();
-  QString new_name =
-      QInputDialog::getText(this, "Rename Display", "New Name?", QLineEdit::Normal, old_name);
-
-  if (new_name.isEmpty() || new_name == old_name)
-  {
-    return;
+//   QString new_name =
+//       QInputDialog::getText(this, "Rename Display", "New Name?", QLineEdit::Normal, old_name);
+//   if(new_name.isEmpty() || new_name == old_name) {
+// 	  return;
+//   }
+/////////Change
+  QInputDialog inputDialog(this);
+  inputDialog.setWindowTitle("Rename Display");
+  inputDialog.setLabelText("New Name?");
+  inputDialog.setTextEchoMode(QLineEdit::Normal);
+  inputDialog.setTextValue(old_name);
+  inputDialog.setWindowModality(Qt::WindowModal);
+  QString new_name = old_name;
+  if(inputDialog.exec() == QDialog::Accepted) {
+	  new_name = inputDialog.textValue();
+  }
+  if(new_name.isEmpty() || new_name == old_name) {
+	  return;
   }
 
+//////////
   display_to_rename->setName(new_name);
 }
 

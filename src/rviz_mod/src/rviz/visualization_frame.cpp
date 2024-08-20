@@ -690,48 +690,48 @@ void VisualizationFrame::openNewToolDialog()
 
 void VisualizationFrame::updateRecentConfigMenu()
 {
-  recent_configs_menu_->clear();
+//   recent_configs_menu_->clear();
 
-  D_string::iterator it = recent_configs_.begin();
-  D_string::iterator end = recent_configs_.end();
-  for (; it != end; ++it)
-  {
-    if (!it->empty())
-    {
-      std::string display_name = *it;
-      if (display_name == default_display_config_file_)
-      {
-        display_name += " (default)";
-      }
-      if (display_name.find(home_dir_) == 0)
-      {
-        display_name = ("~" / fs::path(display_name.substr(home_dir_.size()))).BOOST_FILE_STRING();
-      }
-      QString qdisplay_name = QString::fromStdString(display_name);
-      QAction* action = new QAction(qdisplay_name, this);
-      action->setData(QString::fromStdString(*it));
-      connect(action, SIGNAL(triggered()), this, SLOT(onRecentConfigSelected()));
-      recent_configs_menu_->addAction(action);
-    }
-  }
+//   D_string::iterator it = recent_configs_.begin();
+//   D_string::iterator end = recent_configs_.end();
+//   for (; it != end; ++it)
+//   {
+//     if (!it->empty())
+//     {
+//       std::string display_name = *it;
+//       if (display_name == default_display_config_file_)
+//       {
+//         display_name += " (default)";
+//       }
+//       if (display_name.find(home_dir_) == 0)
+//       {
+//         display_name = ("~" / fs::path(display_name.substr(home_dir_.size()))).BOOST_FILE_STRING();
+//       }
+//       QString qdisplay_name = QString::fromStdString(display_name);
+//       QAction* action = new QAction(qdisplay_name, this);
+//       action->setData(QString::fromStdString(*it));
+//       connect(action, SIGNAL(triggered()), this, SLOT(onRecentConfigSelected()));
+//       recent_configs_menu_->addAction(action);
+//     }
+//   }
 }
 
 void VisualizationFrame::markRecentConfig(const std::string& path)
 {
-  D_string::iterator it = std::find(recent_configs_.begin(), recent_configs_.end(), path);
-  if (it != recent_configs_.end())
-  {
-    recent_configs_.erase(it);
-  }
+//   D_string::iterator it = std::find(recent_configs_.begin(), recent_configs_.end(), path);
+//   if (it != recent_configs_.end())
+//   {
+//     recent_configs_.erase(it);
+//   }
 
-  recent_configs_.push_front(path);
+//   recent_configs_.push_front(path);
 
-  if (recent_configs_.size() > RECENT_CONFIG_COUNT)
-  {
-    recent_configs_.pop_back();
-  }
+//   if (recent_configs_.size() > RECENT_CONFIG_COUNT)
+//   {
+//     recent_configs_.pop_back();
+//   }
 
-  updateRecentConfigMenu();
+//   updateRecentConfigMenu();
 }
 
 void VisualizationFrame::loadDisplayConfig(const QString& qpath)

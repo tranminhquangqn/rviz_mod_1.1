@@ -18,3 +18,20 @@ if [ "$(uname -m)" = "armv7l" ] || [ "$(uname -m)" = "aarch64" ]; then
     git clone https://github.com/desmond196/Qt-5.9.5.git || error_exit "Failed to clone the repository."
     fi
 fi
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install ubuntu-gnome-desktop
+echo "gdm3 shared/default-x-display-manager select gdm3" | sudo debconf-set-selections
+sudo dpkg-reconfigure -f noninteractive gdm3
+sudo reboot
+
+sudo apt install dconf-cli
+gsettings set org.gnome.desktop.background show-desktop-icons true
+
+Optional:
+sudo dpkg-reconfigure gdm3
+sudo apt install gnome-tweaks gnome-shell-extensions
+
+
+

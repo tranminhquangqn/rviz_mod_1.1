@@ -124,7 +124,7 @@ VisualizationFrameMod::~VisualizationFrameMod()
 void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuickOgreRenderWindow* renderWindow)
 {
   initConfigs();
-  
+
   loadPersistentSettings();
 
   QIcon app_icon(
@@ -273,23 +273,23 @@ void VisualizationFrameMod::initMenus()
 {
   file_menu_ = menuBar()->addMenu("&File");
 
-  QAction* file_menu_open_action =
-      file_menu_->addAction("&Open Config", this, SLOT(onOpen()), QKeySequence("Ctrl+O"));
-  this->addAction(file_menu_open_action);
-  QAction* file_menu_save_action =
-      file_menu_->addAction("&Save Config", this, SLOT(onSave()), QKeySequence("Ctrl+S"));
-  this->addAction(file_menu_save_action);
-  QAction* file_menu_save_as_action =
-      file_menu_->addAction("Save Config &As", this, SLOT(onSaveAs()), QKeySequence("Ctrl+Shift+S"));
-  this->addAction(file_menu_save_as_action);
+//   QAction* file_menu_open_action =
+//       file_menu_->addAction("&Open Config", this, SLOT(onOpen()), QKeySequence("Ctrl+O"));
+//   this->addAction(file_menu_open_action);
+//   QAction* file_menu_save_action =
+//       file_menu_->addAction("&Save Config", this, SLOT(onSave()), QKeySequence("Ctrl+S"));
+//   this->addAction(file_menu_save_action);
+//   QAction* file_menu_save_as_action =
+//       file_menu_->addAction("Save Config &As", this, SLOT(onSaveAs()), QKeySequence("Ctrl+Shift+S"));
+//   this->addAction(file_menu_save_as_action);
 
-  recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
-  file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
-  if (show_choose_new_master_option_)
-  {
-    file_menu_->addSeparator();
-    file_menu_->addAction("Change &Master", this, SLOT(changeMaster()));
-  }
+//   recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
+//   file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
+//   if (show_choose_new_master_option_)
+//   {
+//     file_menu_->addSeparator();
+//     file_menu_->addAction("Change &Master", this, SLOT(changeMaster()));
+//   }
   file_menu_->addAction("&Reset", this, SLOT(reset()));
   QAction* file_menu_quit_action =
       file_menu_->addAction("&Quit", this, SLOT(close()), QKeySequence("Ctrl+Q"));
@@ -307,7 +307,7 @@ void VisualizationFrameMod::initMenus()
   // close_button->setText("X");
   // close_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   // close_button->setFixedSize(40, 20);
-  // close_button->setStyleSheet("font-size: 14px;"); 
+  // close_button->setStyleSheet("font-size: 14px;");
   // connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
   // status_label_->setMinimumWidth(750);
   // status_label_->setMaximumWidth(800);

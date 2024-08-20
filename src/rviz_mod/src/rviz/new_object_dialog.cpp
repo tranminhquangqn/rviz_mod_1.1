@@ -62,6 +62,7 @@ NewObjectDialog::NewObjectDialog(Factory* factory,
   , lookup_name_output_(lookup_name_output)
   , display_name_output_(display_name_output)
 {
+	setWindowModality(Qt::WindowModal);
   //***** Layout
 
   // Display Type group

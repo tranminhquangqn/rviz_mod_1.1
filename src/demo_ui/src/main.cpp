@@ -34,6 +34,7 @@
 #include <QString>
 #include <QDebug>
 
+#include <QInputMethod>
 
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
 
@@ -46,17 +47,22 @@ using namespace rviz;
 int main(int argc, char **argv)
 {
   qputenv("QSG_RENDER_LOOP","basic");
+      qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+      QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication qapp( argc, argv );
+  // qapp.setAutoSipEnabled(true);
 
   qmlRegisterType<QtQuickOgreRenderWindow>("ros.rviz", 1, 0, "RenderWindow");
   // qmlRegisterType<WidgetItem2>("WidgetItem", 1, 0, "WidgetItem");
 
   QQmlApplicationEngine engine;
+  
   const QUrl url(QStringLiteral("qrc:/main.qml"));
 
-  RvizLoader rviz_loader(argc, argv, &qapp);
-  engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rviz_loader);
-  engine.load(url);
 
+  RvizVM rviz_loader(argc, argv, &qapp,nullptr);
+  engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rviz_loader);
+
+  engine.load(url);
   return qapp.exec();
 }
