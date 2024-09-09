@@ -10,10 +10,10 @@ endif()
 
 # Specify the path to your custom Qt installation
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    set(Qt5_DIR "/usr/local/Qt-5.9.5/lib/cmake/Qt5")
+  set(Qt5_DIR "/usr/local/Qt-5.9.5/lib/cmake/Qt5" CACHE PATH "Path to Qt5 cmake files" FORCE)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 endif()
 #set(OpenGL_GL_PREFERENCE LEGACY)
-#unset : unset CMAKE_PREFIX_PATH
 #unset : unset Qt5_DIR
 
 set(CMAKE_AUTOUIC ON)

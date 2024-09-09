@@ -32,6 +32,8 @@
 #include <QTimer>
 #include <QBoxLayout>
 #include <QWindow>
+// #include <QQuickItem>
+// #include <QQuickWindow>
 
 #include <OgreSceneManager.h>
 #include <OgreCamera.h>
@@ -131,6 +133,12 @@ void RenderPanel::onLeaveEvent ( QEvent * )
 
 void RenderPanel::onRenderWindowMouseEvents(QMouseEvent* event)
 {
+  // if (event->button() == Qt::RightButton) {
+  //   QPoint globalPos = event->globalPos();
+  //   QContextMenuEvent contextMenuEvent(QContextMenuEvent::Mouse, event->pos(), globalPos);
+  //   onContextMenuEvent(&contextMenuEvent);
+  //   event->accept();
+  // }/////////////////////////// qt quick only
   int last_x = mouse_x_;
   int last_y = mouse_y_;
 
@@ -189,17 +197,33 @@ void RenderPanel::setViewController(ViewController* controller)
   }
 }
 
-void RenderPanel::showContextMenu(boost::shared_ptr<QMenu> menu)
+// void RenderPanel::showContextMenu(boost::shared_ptr<QMenu> menu) //QWidget only
+// {
+//   boost::mutex::scoped_lock lock(context_menu_mutex_);
+//   context_menu_ = menu;
+//   context_menu_visible_ = true;
+//   QWidget* widget = dynamic_cast<QWidget*>(render_window_);
+//   if (widget) {
+//     QApplication::postEvent( widget, new QContextMenuEvent( QContextMenuEvent::Mouse, QPoint() ));
+//   }
+// }
+void RenderPanel::showContextMenu(boost::shared_ptr<QMenu> menu) // QtQuick only
 {
-  boost::mutex::scoped_lock lock(context_menu_mutex_);
-  context_menu_ = menu;
-  context_menu_visible_ = true;
-  QWidget* widget = dynamic_cast<QWidget*>(render_window_);
-  if (widget) {
-    QApplication::postEvent( widget, new QContextMenuEvent( QContextMenuEvent::Mouse, QPoint() ));
-  }
-}
+  // boost::mutex::scoped_lock lock(context_menu_mutex_);
+  // context_menu_ = menu;
+  // context_menu_visible_ = true;
+  // QQuickItem* item = dynamic_cast<QQuickItem*>(render_window_);
+  // if (item) {
+  //   QQuickWindow* window = item->window();
+  //   if (window) {
+  //     QPointF localPosF = item->mapFromScene(QCursor::pos());
+  //     QPoint localPos = localPosF.toPoint();
+  //     QPoint globalPos = QCursor::pos();
+  //     QApplication::postEvent(window, new QContextMenuEvent(QContextMenuEvent::Mouse, localPos, globalPos));
+  //   }
+  // }
 
+}
 void RenderPanel::onContextMenuHide()
 {
   context_menu_visible_ = false;

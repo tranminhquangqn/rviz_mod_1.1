@@ -315,8 +315,8 @@ protected:
   void loadPreferences(const Config& config);
   void savePreferences(Config config);
 
-  void loadWindowGeometry(const Config& config);
-  void saveWindowGeometry(Config config);
+  virtual void loadWindowGeometry(const Config& config);
+  virtual void saveWindowGeometry(Config config);
 
   /** @brief Set the display config file path.
    *

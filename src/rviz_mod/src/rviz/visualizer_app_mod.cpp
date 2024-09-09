@@ -114,7 +114,7 @@ void VisualizerAppMod::setApp(QApplication* app)
 
 bool VisualizerAppMod::init(int argc, char** argv
       ,QtQuickOgreRenderWindow* renderWindow
-      ,QString configPath
+      ,std::string configPath
       )
 {
   ROS_INFO("rviz version %s", get_version().c_str());
@@ -138,7 +138,7 @@ bool VisualizerAppMod::init(int argc, char** argv
     startContinueChecker();
 
     std::string display_config, fixed_frame, splash_path, help_path;
-    display_config = configPath.toUtf8().constData();
+    display_config = configPath;
     int force_gl_version = 0;
 
     po::options_description options;

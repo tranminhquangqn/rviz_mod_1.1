@@ -8,7 +8,9 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include <QApplication>
 #include <QMainWindow>
+#include <QWindow>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QWidget>
@@ -21,20 +23,18 @@
 #include "rviz/quick_visualization_frame.h"
 #include "rviz/visualization_frame_mod.h"
 #include "rviz/visualizer_app_mod.h"
-#include <QApplication>
 #include <rviz/window_manager_interface.h>
-
-#include <QTimer>
 
 class RvizVM : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(bool configVisible READ getConfigVisible WRITE setConfigVisible NOTIFY configVisibleChanged)
 	Q_PROPERTY(bool isInit READ getIsInit NOTIFY isInitChanged)
+	Q_PROPERTY(bool isTempHide READ getIsTempHide)
 public:
 	rviz::VisualizationManager* m_manager;
 	RvizVM(int& argc, char** argv, QApplication* qapp, QObject* parent)
-		: QObject(parent), m_qapp(qapp), m_argc(argc), m_argv(argv), m_configVisible(false), m_isInit(false)
+		: QObject(parent), m_qapp(qapp), m_argc(argc), m_argv(argv), m_configVisible(false), m_isInit(false), m_isTempHide(false)
 	{
 	}
 	~RvizVM()
@@ -42,6 +42,9 @@ public:
 		if(widgetRviz != nullptr) {
 			delete widgetRviz;
 			widgetRviz = nullptr;
+		}
+		if(m_frame) {
+			m_frame->close();
 		}
 	}
 	bool getConfigVisible()
@@ -52,12 +55,14 @@ public:
 	{
 		return m_isInit;
 	}
-
+	bool getIsTempHide()
+	{
+		return m_isTempHide;
+	}
 	// Q_INVOKABLE void viewDisplay(WidgetItem2* widgetPanel){
 	//     widgetPanel->setWidget(m_frame);
 	// }
-
-	Q_INVOKABLE void initRvizApp(rviz::QtQuickOgreRenderWindow* renderWindow, QQuickWindow* qmlWindow)
+	Q_INVOKABLE void initRvizApp(rviz::QtQuickOgreRenderWindow* renderWindow, QQuickItem* rvizFrame,QQuickItem* renderPanel)
 	{
 		rviz::VisualizerAppMod* widgetRviz = new rviz::VisualizerAppMod();
 		widgetRviz->setApp(m_qapp);
@@ -65,21 +70,35 @@ public:
 		m_frame = widgetRviz->frame_;
 		m_vman	= m_frame->getManager();
 		connect(m_frame, SIGNAL(frameCloseSignal(bool)), this, SLOT(setConfigVisible(bool)));
-		connect(m_frame, SIGNAL(frameActiveSignal(bool)), this, SLOT(setIsFrameActive(bool)));
-		m_mainWindow = qmlWindow;
+		connect(m_qapp, &QApplication::focusWindowChanged, this, &RvizVM::onFocusWindowChanged);
+		m_rvizFrame = rvizFrame;
+		m_renderPanel = renderPanel;
 
-		// QObject::connect(m_mainWindow, &QQuickWindow::xChanged, [=]() {
-		//     m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
-		// });
-		// QObject::connect(m_mainWindow, &QQuickWindow::yChanged, [=]() {
-		//     m_frame->move(m_mainWindow->x()+m_mainWindow->width()-rvizConfigWid, m_mainWindow->y());
-		// });
+		// QObject::connect(m_rvizFrame, &QQuickItem::visibleChanged, [=]() {
+		//     QPointF globalPosition = m_rvizFrame->mapToGlobal(QPointF(0, 0));
+		// 	m_frame->move(globalPosition.x(), globalPosition.y());
+		//	m_frame->resize(m_rvizFrame->width(), m_rvizFrame->height());
+		// // });
 		m_isInit = true;
 		Q_EMIT isInitChanged();
 	}
-	Q_INVOKABLE bool isFocus()
+	Q_INVOKABLE void setRvizGeometry()
 	{
-		return m_frame->hasFocus();
+		if(!m_isInit) {
+			return;
+		}
+		QPointF globalPosition = m_rvizFrame->mapToGlobal(QPointF(0, 0));
+		m_frame->setGeometry(globalPosition.x()
+						,globalPosition.y()
+						,m_rvizFrame->width()
+						,m_rvizFrame->height());
+	}
+	Q_INVOKABLE void resetRviz()
+	{
+		if(!m_isInit) {
+			return;
+		}
+		m_frame->resetRviz();
 	}
 
 public Q_SLOTS:
@@ -93,66 +112,44 @@ public Q_SLOTS:
 			Q_EMIT configVisibleChanged();
 		}
 	}
-	void setIsFrameActive(bool value)
-	{
-		if(isFrameActive == value) {
+    void onFocusWindowChanged(QWindow* newWindow)
+    {
+		if(!m_isInit){
 			return;
 		}
-		isFrameActive = value;
-		startQmlCheckHideRviz();
-	}
-	void setQmlActive(bool value)
+		if (!newWindow) {
+			hideRviz();
+		}
+    }
+
+	void showRviz()
 	{
-		if(isQmlActive == value) {
+		if(!m_isInit) {
 			return;
 		}
-		isQmlActive = value;
-		startQmlCheckHideRviz();
+		setRvizGeometry();
+		// m_frame->setFixedSize(m_frame->size());
+		m_frame->show();
+		setConfigVisible(true);
+		m_isTempHide=false;
 	}
-	void startQmlCheckHideRviz()
+	void hideRviz()
 	{
-		// QTimer::singleShot(300, this, [this]() {
-		// 	 	if(m_isInit && !isQmlActive && !isFrameActive) {
-		// 			closeRviz();
-		// 		}
-		// 	 });
-	}
-	void openFrame(rviz::QuickVisualizationFrame* frame_)
-	{
-		// rviz::VisualizationManager* vman = frame_->getManager();
-		// rviz::DisplaysPanel* displays_panel = new rviz::DisplaysPanel;
-		// displays_panel->initialize(vman);
-		// displays_panel->show();
-
-		// moveit_panel = new moveit_rviz_plugin::MotionPlanningDisplay;
-		// moveit_panel->frameWidget_=widgetWindow;
-		// moveit_panel->initialize(m_vman);
-		// m_moveit_frame_=moveit_panel->getFrame();
-		// m_moveit_frame_->setParent(nullptr);
-		// widgetWindow->show();
-	}
-
-	void showRvizBtn()
-	{
-		if(m_isInit) {
-			if(m_frame->isVisible()) {
-				m_frame->close();
-				setConfigVisible(false);
-			}
-			else {
-				m_frame->setGeometry(m_mainWindow->x() + (m_mainWindow->width() / 2) - (rvizConfigWid / 2),
-									 m_mainWindow->y() + (rvizConfigHei / 2) - 30, rvizConfigWid, rvizConfigHei);
-				// m_frame->setFixedSize(m_frame->size());
-				m_frame->show();
-				setConfigVisible(true);
-			}
+		if(!m_isInit) {
+			return;
 		}
+		m_frame->hide();
+		setConfigVisible(false);
 	}
-	void closeRviz()
+	void tempHideRviz()
 	{
-		if(m_isInit) {
-			m_frame->close();
-			setConfigVisible(false);
+		hideRviz();
+		m_isTempHide=true;
+	}
+	void checkReShowRviz()
+	{
+		if(m_isTempHide && m_renderPanel->isVisible()){
+			showRviz();
 		}
 	}
 Q_SIGNALS:
@@ -161,7 +158,8 @@ Q_SIGNALS:
 
 private:
 	QWidget* widgetWindow				= nullptr;
-	QQuickWindow* m_mainWindow			= nullptr;
+	QQuickItem* m_rvizFrame				= nullptr;
+	QQuickItem* m_renderPanel			= nullptr;
 	rviz::DisplaysPanel* displays_panel = nullptr;
 
 	rviz::VisualizationManager* m_vman	 = nullptr;
@@ -172,13 +170,11 @@ private:
 	char** m_argv;
 	bool m_configVisible;
 	bool m_isInit;
+	bool m_isTempHide;
 
 	int rvizConfigWid = 1100;
 	int rvizConfigHei = 410;
 
-	bool isQmlActive = false;
-	bool isFrameActive = false;
-
-	QString source_ = QString::fromStdString(getenv("HOME") + std::string("/tomo_config/moveit_ui.rviz"));
+	std::string source_ = getenv("HOME") + std::string("/tomo_config/moveit_ui.rviz");
 };
 #endif

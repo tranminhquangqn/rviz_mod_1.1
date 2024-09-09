@@ -33,5 +33,7 @@ Optional:
 sudo dpkg-reconfigure gdm3
 sudo apt install gnome-tweaks gnome-shell-extensions
 
-
+check window manager
+update-alternatives --list x-window-manager
+update-alternatives --query x-window-manager | grep 'Value:'
 

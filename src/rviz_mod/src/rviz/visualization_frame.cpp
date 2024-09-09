@@ -146,21 +146,21 @@ VisualizationFrame::VisualizationFrame(QWidget* parent)
   splash_path_ =
       QString::fromStdString((fs::path(package_path_) / "images/splash.png").BOOST_FILE_STRING());
 
-  QToolButton* reset_button = new QToolButton();
-  reset_button->setText("Reset");
-  reset_button->setContentsMargins(0, 0, 0, 0);
-  statusBar()->addPermanentWidget(reset_button, 0);
-  connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
+  // QToolButton* reset_button = new QToolButton();
+  // reset_button->setText("Reset");
+  // reset_button->setContentsMargins(0, 0, 0, 0);
+  // statusBar()->addPermanentWidget(reset_button, 0);
+  // connect(reset_button, SIGNAL(clicked(bool)), this, SLOT(reset()));
 
   status_label_ = new QLabel("");
-  statusBar()->addPermanentWidget(status_label_, 1);
+  // statusBar()->addPermanentWidget(status_label_, 1);
   connect(this, SIGNAL(statusUpdate(const QString&)), status_label_, SLOT(setText(const QString&)));
 
   fps_label_ = new QLabel("");
-  fps_label_->setMinimumWidth(40);
-  fps_label_->setAlignment(Qt::AlignRight);
-  statusBar()->addPermanentWidget(fps_label_, 0);
-  original_status_bar_ = statusBar();
+  // fps_label_->setMinimumWidth(40);
+  // fps_label_->setAlignment(Qt::AlignRight);
+  // statusBar()->addPermanentWidget(fps_label_, 0);
+  // original_status_bar_ = statusBar();
 
   //statusBar()->setSizeGripEnabled(false);//added
 
@@ -736,6 +736,9 @@ void VisualizationFrame::markRecentConfig(const std::string& path)
 
 void VisualizationFrame::loadDisplayConfig(const QString& qpath)
 {
+  if (!QFile::exists(qpath)) {
+    ROS_ERROR("File at '%s' not found.", qpath.toStdString().c_str());
+  }
   std::string path = qpath.toStdString();
   fs::path actual_load_path = path;
   bool valid_load_path = fs::is_regular_file(actual_load_path);

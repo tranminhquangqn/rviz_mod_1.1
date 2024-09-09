@@ -56,7 +56,7 @@ public:
 
   /** Start everything.  Pass in command line arguments.
    * @return false on failure, true on success. */
-  bool init(int argc, char** argv,QtQuickOgreRenderWindow* renderWindow,QString configPath);
+  bool init(int argc, char** argv,QtQuickOgreRenderWindow* renderWindow,std::string configPath);
 
 // private Q_SLOTS:
 public Q_SLOTS:

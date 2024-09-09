@@ -114,8 +114,28 @@ namespace rviz
 {
 VisualizationFrameMod::VisualizationFrameMod()
 {
-  setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
-  //setFocusPolicy(Qt::StrongFocus);
+  //Check windowmanager using
+    const std::string cmd = "update-alternatives --query x-window-manager | grep 'Value:'";
+    std::array<char, 128> buffer;
+    std::string result;
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (!pipe) {
+        ROS_ERROR("Failed to run command.");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
+        result += buffer.data();
+    }
+    pclose(pipe);
+    std::string wmValue = result.substr(result.find(":") + 2);
+    wmValue.erase(wmValue.find_last_not_of("\n") + 1);
+  if (wmValue == "/usr/bin/mutter") {
+      // setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
+      setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
+  } else if (wmValue == "/usr/bin/openbox") {
+      setWindowFlags(Qt::ToolTip);//Bug cannot use keyboard input
+  } else {
+      setWindowFlags(Qt::ToolTip);
+  }
 }
 
 VisualizationFrameMod::~VisualizationFrameMod()
@@ -271,17 +291,17 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuic
 
 void VisualizationFrameMod::initMenus()
 {
-  file_menu_ = menuBar()->addMenu("&File");
+file_menu_ = menuBar()->addMenu("&File");
 
-//   QAction* file_menu_open_action =
-//       file_menu_->addAction("&Open Config", this, SLOT(onOpen()), QKeySequence("Ctrl+O"));
-//   this->addAction(file_menu_open_action);
-//   QAction* file_menu_save_action =
-//       file_menu_->addAction("&Save Config", this, SLOT(onSave()), QKeySequence("Ctrl+S"));
-//   this->addAction(file_menu_save_action);
-//   QAction* file_menu_save_as_action =
-//       file_menu_->addAction("Save Config &As", this, SLOT(onSaveAs()), QKeySequence("Ctrl+Shift+S"));
-//   this->addAction(file_menu_save_as_action);
+  // QAction* file_menu_open_action =
+  //     file_menu_->addAction("&Open Config", this, SLOT(onOpen()), QKeySequence("Ctrl+O"));
+  // this->addAction(file_menu_open_action);
+  // QAction* file_menu_save_action =
+  //     file_menu_->addAction("&Save Config", this, SLOT(onSave()), QKeySequence("Ctrl+S"));
+  // this->addAction(file_menu_save_action);
+  // QAction* file_menu_save_as_action =
+  //     file_menu_->addAction("Save Config &As", this, SLOT(onSaveAs()), QKeySequence("Ctrl+Shift+S"));
+  // this->addAction(file_menu_save_as_action);
 
 //   recent_configs_menu_ = file_menu_->addMenu("&Recent Configs");
 //   file_menu_->addAction("Save &Image", this, SLOT(onSaveImage()));
@@ -301,25 +321,50 @@ void VisualizationFrameMod::initMenus()
   delete_view_menu_ = view_menu_->addMenu("&Delete Panel");
   delete_view_menu_->setEnabled(false);
 
-  // QWidget *widget = new QWidget(this);
-  // QHBoxLayout *layout = new QHBoxLayout(widget);
+  QWidget *widget = new QWidget(this);
+  QHBoxLayout *layout = new QHBoxLayout(widget);
   // QToolButton* close_button = new QToolButton();
   // close_button->setText("X");
   // close_button->setToolButtonStyle(Qt::ToolButtonTextOnly);
   // close_button->setFixedSize(40, 20);
   // close_button->setStyleSheet("font-size: 14px;");
   // connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
-  // status_label_->setMinimumWidth(750);
-  // status_label_->setMaximumWidth(800);
-  // fps_label_->setMaximumWidth(50);
-  // layout->addWidget(status_label_);
-  // layout->addWidget(fps_label_);
+  status_label_->setMinimumWidth(720);
+  status_label_->setMaximumWidth(720);
+  fps_label_->setMaximumWidth(50);
+  layout->addWidget(status_label_);
+  layout->addWidget(fps_label_);
   // layout->addWidget(close_button);
-  // layout->setContentsMargins(2, 2, 2, 2); // Remove margins
-  // layout->setAlignment(Qt::AlignRight); // Align button to the right
-  // widget->setLayout(layout);
-  // menuBar()->setCornerWidget(widget, Qt::TopRightCorner);
+  layout->setContentsMargins(2, 2, 2, 2); // Remove margins
+  layout->setAlignment(Qt::AlignRight); // Align button to the right
+  widget->setLayout(layout);
+  menuBar()->setCornerWidget(widget, Qt::TopRightCorner);
 
 }
+void VisualizationFrameMod::loadWindowGeometry(const Config& config)
+{
+  QString main_window_config;
+  if (config.mapGetString("QMainWindow State", &main_window_config))
+  {
+    restoreState(QByteArray::fromHex(qPrintable(main_window_config)));
+  }
 
+  QList<PanelDockWidget*> dock_widgets = findChildren<PanelDockWidget*>();
+
+  for (QList<PanelDockWidget*>::iterator it = dock_widgets.begin(); it != dock_widgets.end(); it++)
+  {
+    Config itConfig = config.mapGetChild((*it)->windowTitle());
+
+    if (itConfig.isValid())
+    {
+      (*it)->load(itConfig);
+    }
+  }
+
+}
+void VisualizationFrameMod::resetRviz()
+{
+  Ogre::MeshManager::getSingleton().removeAll();
+  manager_->resetTime();
+}
 } // end namespace rviz

@@ -45,9 +45,7 @@ PanelDockWidget::PanelDockWidget(const QString& name)
           |QDockWidget::DockWidgetMovable
           );
           //setFeatures(QDockWidget::NoDockWidgetFeatures);
-		  setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-
-
+          
   QWidget* title_bar = new QWidget(this);
 
   QPalette pal(palette());
@@ -56,11 +54,11 @@ PanelDockWidget::PanelDockWidget(const QString& name)
   title_bar->setPalette(pal);
   title_bar->setContentsMargins(0, 0, 0, 0);
 
-  QToolButton* close_button = new QToolButton();
-  close_button->setIcon(QIcon::fromTheme("window-close"));
-  close_button->setIconSize(QSize(10, 10));
+  // QToolButton* close_button = new QToolButton();
+  // close_button->setIcon(QIcon::fromTheme("window-close"));
+  // close_button->setIconSize(QSize(10, 10));
 
-  connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
+  // connect(close_button, SIGNAL(clicked()), this, SLOT(close()));
 
   title_label_ = new QLabel(name, this);
 
@@ -72,7 +70,7 @@ PanelDockWidget::PanelDockWidget(const QString& name)
   title_layout->setContentsMargins(2, 2, 2, 2);
   title_layout->addWidget(icon_label_, 0);
   title_layout->addWidget(title_label_, 1);
-  title_layout->addWidget(close_button, 0);
+  // title_layout->addWidget(close_button, 0);
   title_bar->setLayout(title_layout);
   setTitleBarWidget(title_bar);
 }

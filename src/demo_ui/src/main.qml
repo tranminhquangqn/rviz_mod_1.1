@@ -7,16 +7,30 @@ import ros.rviz 1.0
 import "View/TomoView"
 import QtQuick.VirtualKeyboard 2.2
 import QtQuick.VirtualKeyboard.Settings 2.2
+import QtQuick.VirtualKeyboard.Styles 2.2
 ApplicationWindow {
   id: mainWindow
   width: 1500
   height: 900
   visible: true
    property var panel_view: null
-  onClosing: {
-    rvizLoader.closeRviz()
-    close.accepted = true
-  }
+    Window{
+      id:keyboardWindow
+      width:960
+      height:360
+      flags:Qt.ToolTip
+      x:mainWindow.x+mainWindow.width/2-keyboardWindow.width/2
+      y:mainWindow.y+mainWindow.height-keyboardWindow.height
+      color: "black"
+      visible:Qt.inputMethod.visible
+      InputPanel {
+          id: inputPanel
+          anchors.fill: parent
+          Component.onCompleted: {
+            VirtualKeyboardSettings.activeLocales= ["en"]
+        }
+      }
+    }
   // onActiveChanged: {
   //     if (!active && !rvizLoader.isFocus()) {
   //         rvizLoader.closeRviz()
@@ -41,19 +55,29 @@ ApplicationWindow {
   //     }
   // }
   RvizPanel{
-    
     anchors.fill: parent
-    
   }
+  Row{
+    anchors.bottom:parent.bottom
     Button {
+      id:btnshow
       z:10
       width:100
       height:50
       text: rvizLoader.configVisible?"Hide Config":"Show Config"
       onClicked: {
-        rvizLoader.showRvizBtn()
+        if(rvizLoader.configVisible){
+            rvizLoader.hideRviz()
+        }else{
+            rvizLoader.showRviz()
+        }
       }
     }
+    TextField{
+      width:100
+      height:50
+    }
+  }
 }
 
 

@@ -1,6 +1,6 @@
 Build and run:
 
-cd ~/rviz_mod_1.1 && source ~/ws_tomo/install/setup.bash && catkin build && source devel/setup.bash && roslaunch tomo_ui tomo_ui.launch
+cd ~/rviz_mod_1.1 && source ~/ws_tomo/install/setup.bash && catkin build && source install/setup.bash && roslaunch tomo_ui tomo_ui.launch
 
 Debug:
 gdb --args devel/lib/tomo_ui/tomo_ui

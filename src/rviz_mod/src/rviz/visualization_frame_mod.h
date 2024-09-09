@@ -90,22 +90,12 @@ public:
   }
   void initMenus() override;
   //void initToolbars() override {};
-
-  protected:
-  bool event(QEvent* event) override
-  {
-	  if(event->type() == QEvent::WindowActivate) {;
-		  frameActiveSignal(true);
-	  }
-	  else if(event->type() == QEvent::WindowDeactivate) {;
-		  frameActiveSignal(false);
-	  }
-	  return QWidget::event(event);
-  }
-
+  void resetRviz();
+protected:
+  void loadWindowGeometry(const Config& config) override;
 Q_SIGNALS:
   void frameCloseSignal(bool value);
-  void frameActiveSignal(bool value);
+
 };
 
 } // namespace rviz
