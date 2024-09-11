@@ -36,6 +36,10 @@ public:
 	RvizVM(int& argc, char** argv, QApplication* qapp, QObject* parent)
 		: QObject(parent), m_qapp(qapp), m_argc(argc), m_argv(argv), m_configVisible(false), m_isInit(false), m_isTempHide(false)
 	{
+		// if (QGuiApplication::platformName() == "gnome" || QGuiApplication::platformName() == "unity") {
+        // window->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		std::string plat = m_qapp->platformName().toStdString();
+		qDebug()<<"Window manager: "<<plat.c_str();
 	}
 	~RvizVM()
 	{

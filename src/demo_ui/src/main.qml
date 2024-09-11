@@ -14,6 +14,10 @@ ApplicationWindow {
   height: 900
   visible: true
    property var panel_view: null
+  //  onClosing: {
+  //   rvizLoader.closeRviz()
+  //   close.accepted = true
+  // }
     Window{
       id:keyboardWindow
       width:960
