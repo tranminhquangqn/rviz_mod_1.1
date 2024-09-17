@@ -120,9 +120,9 @@ Config::Config() : node_(new Config::Node())
 {
 }
 
-// Config::Config(const Config& source) : node_(source.node_)
-// {
-// }
+Config::Config(const Config& source) : node_(source.node_)
+{
+}
 
 Config::Config(QVariant value) : node_(new Config::Node())
 {
@@ -135,6 +135,10 @@ Config::Config(NodePtr node) : node_(std::move(node))
 
 void Config::copy(const Config& source)
 {
+	if(!source.isValid()) {
+		node_ = NodePtr();
+		return;
+	}
   setType(source.getType());
   switch (source.getType())
   {
@@ -177,8 +181,13 @@ Config::Type Config::getType() const
 
 void Config::setType(Type new_type)
 {
-  makeValid();
-  node_->setType(new_type);
+	if(new_type == Invalid) {
+		node_ = NodePtr();
+	}
+	else {
+		makeValid();
+		node_->setType(new_type);
+	}
 }
 
 void Config::mapSetValue(const QString& key, const QVariant value)
