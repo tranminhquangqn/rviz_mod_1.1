@@ -14,15 +14,16 @@ ApplicationWindow {
   height: 900
   visible: true
    property var panel_view: null
-  //  onClosing: {
-  //   rvizLoader.closeRviz()
-  //   close.accepted = true
-  // }
+   onClosing: {
+    rvizLoader.closeRviz()
+    keyboardWindow.close()
+    close.accepted = true
+  }
     Window{
       id:keyboardWindow
       width:960
       height:360
-      flags:Qt.ToolTip
+      flags:Qt.Tool|Qt.WindowStaysOnTopHint|Qt.FramelessWindowHint|Qt.WindowDoesNotAcceptFocus
       x:mainWindow.x+mainWindow.width/2-keyboardWindow.width/2
       y:mainWindow.y+mainWindow.height-keyboardWindow.height
       color: "black"

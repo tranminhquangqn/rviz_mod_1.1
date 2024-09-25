@@ -9,7 +9,8 @@ if (POLICY CMP0054)
 endif()
 
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    set(Qt5_DIR "/usr/local/Qt-5.9.5/lib/cmake/Qt5")
+  set(Qt5_DIR "/usr/local/Qt-5.9.5/lib/cmake/Qt5" CACHE PATH "Path to Qt5 cmake files" FORCE)
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 endif()
 
 set(CMAKE_AUTOUIC ON)

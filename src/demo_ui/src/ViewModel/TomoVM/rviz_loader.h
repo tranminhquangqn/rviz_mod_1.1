@@ -145,6 +145,13 @@ public Q_SLOTS:
 		m_frame->hide();
 		setConfigVisible(false);
 	}
+	void closeRviz()
+	{
+		if(!m_isInit) {
+			return;
+		}
+		m_frame->close();
+	}
 	void tempHideRviz()
 	{
 		hideRviz();
