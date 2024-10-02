@@ -87,6 +87,7 @@ ViewsPanel::ViewsPanel(QWidget* parent) : Panel(parent), view_man_(nullptr)
 void ViewsPanel::onInitialize()
 {
   setViewManager(vis_manager_->getViewManager());
+  vis_manager_->getQmlEngine()->rootContext()->setContextProperty(QStringLiteral("viewsPanel"), this);
 }
 
 void ViewsPanel::setViewManager(ViewManager* view_man)

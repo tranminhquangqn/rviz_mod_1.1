@@ -3,6 +3,8 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 
 import ros.rviz 1.0
+// import WidgetItem 1.0 //For testing
+
 
 Rectangle {
   id: rvizPanel
@@ -12,7 +14,7 @@ Rectangle {
       anchors.fill: parent
       Rectangle{
           id:configFrame
-          visible: rvizLoader.configVisible
+          // visible: rvizLoader.configVisible
           Layout.preferredHeight: 410
           Layout.fillWidth: true
           color: "black"
@@ -37,7 +39,7 @@ Rectangle {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Component.onCompleted:{
-          rvizLoader.initRvizApp(renderWindow,configFrame,rvizPanel)
+          rvizLoader.initRvizApp(renderWindow,configFrame,rvizPanel,qmlEngine)
         }
       }
   }

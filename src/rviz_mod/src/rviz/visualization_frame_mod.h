@@ -34,6 +34,7 @@
 
 #include <QMainWindow>
 #include <QList>
+#include <QQmlApplicationEngine>
 
 #include <string>
 #include <deque>
@@ -48,6 +49,7 @@
 #include "rviz/visualization_frame.h"
 #include "rviz/render_panel.h"
 #include "rviz/ogre_helpers/qt_quick_ogre_render_window.h"
+
 
 
 class QSplashScreen;
@@ -83,7 +85,7 @@ public:
   VisualizationFrameMod();
   ~VisualizationFrameMod();
   //void initialize(const QString& display_config_file = "");
-  void initialize(const QString& display_config_file = "",QtQuickOgreRenderWindow* renderWindow=nullptr);
+  void initialize(const QString& display_config_file = "",QtQuickOgreRenderWindow* renderWindow=nullptr,QQmlApplicationEngine* qmlEngine=nullptr);
   void closeEvent(QCloseEvent* event) override {
       frameCloseSignal(false);
       event->accept();

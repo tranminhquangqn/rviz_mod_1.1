@@ -31,6 +31,7 @@
 
 #include <QApplication>
 #include <QObject>
+#include <QQmlApplicationEngine>
 
 #ifndef Q_MOC_RUN // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 #include <ros/ros.h>
@@ -56,7 +57,7 @@ public:
 
   /** Start everything.  Pass in command line arguments.
    * @return false on failure, true on success. */
-  bool init(int argc, char** argv,QtQuickOgreRenderWindow* renderWindow,std::string configPath);
+  bool init(int argc, char** argv,QtQuickOgreRenderWindow* renderWindow,std::string configPath,QQmlApplicationEngine* qmlEngine);
 
 // private Q_SLOTS:
 public Q_SLOTS:

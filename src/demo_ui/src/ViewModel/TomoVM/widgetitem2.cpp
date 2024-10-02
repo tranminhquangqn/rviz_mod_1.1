@@ -31,7 +31,7 @@ void WidgetItem2::setWidget(QWidget *widget)
     
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &WidgetItem2::update);
-    m_timer->start(100);  // 16 for Approximately 60 FPS
+    m_timer->start(16);  // 16 for Approximately 60 FPS
     }
     updateWidget();
 }
@@ -66,6 +66,7 @@ void WidgetItem2::routeMouseEvents(QMouseEvent* event)
     if (m_widget) {
         QPoint widgetPos = event->pos();
         child = m_widget->childAt(widgetPos);
+        child->activateWindow();
         child->setFocus();
         if (child) {
             QPoint childPos = child->mapFrom(m_widget, widgetPos);

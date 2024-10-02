@@ -344,7 +344,7 @@ void VisualizationFrame::initialize(const QString& display_config_file)
     app_->processEvents();
   this->show();
 
-  manager_ = new VisualizationManager(render_panel_, this);
+  manager_ = new VisualizationManager(render_panel_, nullptr, this);
 
   manager_->setHelpPath(help_path_);
   connect(manager_, SIGNAL(escapePressed()), this, SLOT(exitFullScreen()));

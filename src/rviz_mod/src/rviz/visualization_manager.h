@@ -40,6 +40,8 @@
 #include "rviz/display_context.h"
 #include "rviz/rviz_export.h"
 
+#include <QQmlApplicationEngine>
+
 class QKeyEvent;
 class QTimer;
 
@@ -109,7 +111,7 @@ public:
    *        VisualizationFrame, the top-level container widget of rviz).
    * @param tf a pointer to tf::TransformListener which will be internally used by FrameManager.
    */
-  explicit VisualizationManager(RenderPanel* render_panel, WindowManagerInterface* wm = nullptr);
+  explicit VisualizationManager(RenderPanel* render_panel, QQmlApplicationEngine* qmlEngine = nullptr, WindowManagerInterface* wm = nullptr);
 
   [[deprecated("This constructor signature will be removed in the next version. "
                "If you still need to pass a boost::shared_ptr<tf::TransformListener>, "
@@ -380,6 +382,10 @@ public:
   {
     return help_path_;
   }
+  QQmlApplicationEngine* getQmlEngine()
+  {
+    return qmlEngine_;
+  }
 
 Q_SIGNALS:
 
@@ -475,6 +481,7 @@ private:
   BitAllocator visibility_bit_allocator_;
   QString help_path_;
   Ogre::Light* directional_light_;
+  QQmlApplicationEngine* qmlEngine_;
 };
 
 } // namespace rviz

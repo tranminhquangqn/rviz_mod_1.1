@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtQuick.Controls 1.4 as QQC14
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.3
 import ros.rviz 1.0
@@ -36,6 +37,23 @@ ApplicationWindow {
         }
       }
     }
+    // Popup{
+    //   id:keyboardWindow
+    //   width:960
+    //   height:360
+    //   x:mainWindow.x+mainWindow.width/2-keyboardWindow.width/2
+    //   y:mainWindow.y+mainWindow.height-keyboardWindow.height
+    //   closePolicy: Popup.NoAutoClose
+    //   visible:Qt.inputMethod.visible
+    //   modal:false
+    //   InputPanel {
+    //       id: inputPanel
+    //       anchors.fill: parent
+    //       Component.onCompleted: {
+    //         VirtualKeyboardSettings.activeLocales= ["en"]
+    //     }
+    //   }
+    // }
   // onActiveChanged: {
   //     if (!active && !rvizLoader.isFocus()) {
   //         rvizLoader.closeRviz()
@@ -78,11 +96,22 @@ ApplicationWindow {
         }
       }
     }
+    Button {
+      z:10
+      width:100
+      height:50
+      text: "zero"
+      onClicked: {
+          viewsPanel.onZeroClicked()
+      }
+    }
     TextField{
       width:100
       height:50
     }
   }
+  
+
 }
 
 

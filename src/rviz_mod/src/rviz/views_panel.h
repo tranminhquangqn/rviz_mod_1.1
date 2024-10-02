@@ -32,6 +32,9 @@
 
 #include "rviz/panel.h"
 
+#include <QQmlContext>
+#include <QDebug>
+
 class QComboBox;
 class QModelIndex;
 class QPushButton;
@@ -78,11 +81,13 @@ public:
   /** @brief Save configuration data, specifically the PropertyTreeWidget view settings. */
   void save(Config config) const override;
 
+public Q_SLOTS:
+  void onZeroClicked();
+
 private Q_SLOTS:
   void onTypeSelectorChanged(int selected_index);
   void onDeleteClicked();
   void renameSelected();
-  void onZeroClicked();
   void onCurrentChanged();
 
   void setCurrentViewFromIndex(const QModelIndex& index);

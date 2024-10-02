@@ -115,6 +115,7 @@ void VisualizerAppMod::setApp(QApplication* app)
 bool VisualizerAppMod::init(int argc, char** argv
       ,QtQuickOgreRenderWindow* renderWindow
       ,std::string configPath
+      ,QQmlApplicationEngine* qmlEngine
       )
 {
   ROS_INFO("rviz version %s", get_version().c_str());
@@ -218,7 +219,7 @@ bool VisualizerAppMod::init(int argc, char** argv
     if (vm.count("splash-screen"))
       frame_->setSplashPath(QString::fromStdString(splash_path));
 
-    frame_->initialize(QString::fromStdString(display_config),renderWindow);
+    frame_->initialize(QString::fromStdString(display_config),renderWindow,qmlEngine);
     //frame_->initialize(configPath,renderWindow);
 
     // if (!fixed_frame.empty())

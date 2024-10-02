@@ -46,6 +46,8 @@
 #include "rviz/visualization_manager.h"
 
 #include "rviz/displays_panel.h"
+#include <QQmlContext>
+#include <QDebug>
 
 namespace rviz
 {
@@ -98,6 +100,7 @@ DisplaysPanel::~DisplaysPanel()
 void DisplaysPanel::onInitialize()
 {
   property_grid_->setModel(vis_manager_->getDisplayTreeModel());
+  vis_manager_->getQmlEngine()->rootContext()->setContextProperty(QStringLiteral("displaysPanel"), vis_manager_->getDisplayTreeModel());
 }
 
 void DisplaysPanel::onNewDisplay()

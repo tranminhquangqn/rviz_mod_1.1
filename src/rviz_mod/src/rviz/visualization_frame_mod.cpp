@@ -114,34 +114,34 @@ namespace rviz
 {
 VisualizationFrameMod::VisualizationFrameMod()
 {
-  //Check windowmanager using
-    const std::string cmd = "update-alternatives --query x-window-manager | grep 'Value:'";
-    std::array<char, 128> buffer;
-    std::string result;
-    FILE* pipe = popen(cmd.c_str(), "r");
-    if (!pipe) {
-        ROS_ERROR("Failed to run command.");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
-        result += buffer.data();
-    }
-    pclose(pipe);
-    std::string wmValue = result.substr(result.find(":") + 2);
-    wmValue.erase(wmValue.find_last_not_of("\n") + 1);
-  if (wmValue == "/usr/bin/mutter") {
-      // setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
-      setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
-  } else if (wmValue == "/usr/bin/openbox") {
-      setWindowFlags(Qt::ToolTip);//Bug cannot use keyboard input
-  } else {
-      setWindowFlags(Qt::ToolTip);
-  }
+  // //Check windowmanager using
+  //   const std::string cmd = "update-alternatives --query x-window-manager | grep 'Value:'";
+  //   std::array<char, 128> buffer;
+  //   std::string result;
+  //   FILE* pipe = popen(cmd.c_str(), "r");
+  //   if (!pipe) {
+  //       ROS_ERROR("Failed to run command.");
+  //   }
+  //   while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
+  //       result += buffer.data();
+  //   }
+  //   pclose(pipe);
+  //   std::string wmValue = result.substr(result.find(":") + 2);
+  //   wmValue.erase(wmValue.find_last_not_of("\n") + 1);
+  // if (wmValue == "/usr/bin/mutter") {
+  //     // setWindowFlags(Qt::WindowStaysOnTopHint|Qt::WindowCloseButtonHint);
+  //     setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
+  // } else if (wmValue == "/usr/bin/openbox") {
+  //     setWindowFlags(Qt::ToolTip);//Bug cannot use keyboard input
+  // } else {
+  //     setWindowFlags(Qt::ToolTip);
+  // }
 }
 
 VisualizationFrameMod::~VisualizationFrameMod()
 {
 }
-void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuickOgreRenderWindow* renderWindow)
+void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuickOgreRenderWindow* renderWindow,QQmlApplicationEngine* qmlEngine)
 {
   initConfigs();
 
@@ -236,7 +236,7 @@ void VisualizationFrameMod::initialize(const QString& display_config_file,QtQuic
     app_->processEvents();
   // this->show();
 
-  manager_ = new VisualizationManager(render_panel_, this);
+  manager_ = new VisualizationManager(render_panel_, qmlEngine, this);
   manager_->setHelpPath(help_path_);
   connect(manager_, SIGNAL(escapePressed()), this, SLOT(exitFullScreen()));
 

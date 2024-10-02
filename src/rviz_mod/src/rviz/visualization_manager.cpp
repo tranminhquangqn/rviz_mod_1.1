@@ -124,9 +124,10 @@ public:
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-VisualizationManager::VisualizationManager(RenderPanel* render_panel, WindowManagerInterface* wm)
+VisualizationManager::VisualizationManager(RenderPanel* render_panel, QQmlApplicationEngine* qmlEngine, WindowManagerInterface* wm)
   : VisualizationManager(render_panel, wm, boost::shared_ptr<tf::TransformListener>())
 {
+  qmlEngine_ = qmlEngine;
 }
 #ifndef _WIN32
 #pragma GCC diagnostic pop

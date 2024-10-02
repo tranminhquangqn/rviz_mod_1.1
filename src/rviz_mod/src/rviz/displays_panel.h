@@ -67,6 +67,11 @@ public:
   /** @brief Read state from the given Config. */
   void load(const Config& config) override;
 
+public Q_SLOTS:
+  PropertyTreeWidget* getTreeWidget(){
+    return property_grid_;
+  }
+
 protected Q_SLOTS:
   /// Called when the "Add" button is pressed
   void onNewDisplay();

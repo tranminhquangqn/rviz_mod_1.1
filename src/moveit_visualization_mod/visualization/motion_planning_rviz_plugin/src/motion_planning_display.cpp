@@ -71,6 +71,7 @@
 #include <QShortcut>
 
 #include "ui_motion_planning_rviz_plugin_frame.h"
+#include <QQmlContext>
 
 namespace moveit_rviz_plugin
 {
@@ -260,6 +261,7 @@ void MotionPlanningDisplay::onInitialize()
         new QShortcut(QKeySequence("Ctrl+I"), context_->getWindowManager()->getParentWindow());
     connect(im_reset_shortcut, SIGNAL(activated()), this, SLOT(resetInteractiveMarkers()));
   }
+  vis_manager_->getQmlEngine()->rootContext()->setContextProperty(QStringLiteral("moveItPanel"), this);
 }
 
 void MotionPlanningDisplay::motionPanelVisibilityChange(bool enable)

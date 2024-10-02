@@ -25,6 +25,9 @@
 #include "rviz/visualizer_app_mod.h"
 #include <rviz/window_manager_interface.h>
 
+#include <QQmlApplicationEngine>
+// #include "widgetitem2.h"
+
 class RvizVM : public QObject
 {
 	Q_OBJECT
@@ -66,12 +69,13 @@ public:
 	// Q_INVOKABLE void viewDisplay(WidgetItem2* widgetPanel){
 	//     widgetPanel->setWidget(m_frame);
 	// }
-	Q_INVOKABLE void initRvizApp(rviz::QtQuickOgreRenderWindow* renderWindow, QQuickItem* rvizFrame,QQuickItem* renderPanel)
+	Q_INVOKABLE void initRvizApp(rviz::QtQuickOgreRenderWindow* renderWindow, QQuickItem* rvizFrame,QQuickItem* renderPanel, QQmlApplicationEngine* qmlEngine)
 	{
 		rviz::VisualizerAppMod* widgetRviz = new rviz::VisualizerAppMod();
 		widgetRviz->setApp(m_qapp);
-		widgetRviz->init(m_argc, m_argv, renderWindow, source_);
+		widgetRviz->init(m_argc, m_argv, renderWindow, source_, qmlEngine);
 		m_frame = widgetRviz->frame_;
+		m_frame->setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint);
 		m_vman	= m_frame->getManager();
 		connect(m_frame, SIGNAL(frameCloseSignal(bool)), this, SLOT(setConfigVisible(bool)));
 		connect(m_qapp, &QApplication::focusWindowChanged, this, &RvizVM::onFocusWindowChanged);
@@ -118,12 +122,12 @@ public Q_SLOTS:
 	}
     void onFocusWindowChanged(QWindow* newWindow)
     {
-		if(!m_isInit){
-			return;
-		}
-		if (!newWindow) {
-			hideRviz();
-		}
+		// if(!m_isInit){
+		// 	return;
+		// }
+		// if (!newWindow) {
+		// 	hideRviz();
+		// }
     }
 
 	void showRviz()

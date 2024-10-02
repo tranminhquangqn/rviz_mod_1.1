@@ -62,6 +62,7 @@ int main(int argc, char **argv)
 
   RvizVM rviz_loader(argc, argv, &qapp,nullptr);
   engine.rootContext()->setContextProperty(QStringLiteral("rvizLoader"), &rviz_loader);
+  engine.rootContext()->setContextProperty(QStringLiteral("qmlEngine"), &engine);
 
   engine.load(url);
   return qapp.exec();
